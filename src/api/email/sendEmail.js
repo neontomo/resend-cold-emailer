@@ -11,7 +11,6 @@ async function sendEmail({
   tempAPIKey
 }) {
   try {
-    // check if in production:
     if (!process.env.RESEND_API_KEY && !tempAPIKey) {
       console.log('Error', 'RESEND_API_KEY is not set')
       return { error: 'RESEND_API_KEY is not set' }
