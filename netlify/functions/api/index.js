@@ -43,6 +43,20 @@ router.get('/addUser/:email/:productID/:licenseKey', async (req, res) => {
   res.send(response)
 })
 
+router.get('/send', async (req, res) => {
+  const { sendEmail } = require('../../../src/api/email/sendEmail')
+  const response = await sendEmail({
+    fromName: req.query.fromName,
+    fromEmail: req.query.fromEmail,
+    toName: req.query.toName,
+    toEmail: req.query.toEmail,
+    subject: req.query.subject,
+    message: req.query.message,
+    tempAPIKey: req.query.tempAPIKey
+  })
+  res.send(response)
+})
+
 app.use('/api', router)
 
 module.exports.handler = serverless(app)

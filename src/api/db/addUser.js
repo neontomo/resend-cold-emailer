@@ -1,7 +1,6 @@
 const { client, setup } = require('./client')
 const { findUser } = require('./findUser')
 const { updateUser } = require('./updateUser')
-const { checkLicense } = require('./checkLicense')
 
 async function addUser(user) {
   try {

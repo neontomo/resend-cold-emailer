@@ -4,8 +4,14 @@ import netlifyIdentity from 'netlify-identity-widget'
 import { useState, useEffect } from 'react'
 import Button from './Button'
 import axios from 'axios'
+import { Check } from '@phosphor-icons/react'
+import LoginButton from './LoginButton'
 
-export default function LoginButton() {
+export default function LoggedInElement({
+  children
+}: {
+  children: React.ReactNode
+}) {
   const [loggedIn, setLoggedIn] = useState(false)
   const [username, setUsername] = useState('')
   const [netlifyInitSet, setNetlifyInitSet] = useState(false)
@@ -37,8 +43,9 @@ export default function LoginButton() {
       if (!netlifyInitSet) {
         handleCheckLicenseKey()
         setNetlifyInitSet(true)
-        window.location.href = '/dashboard'
       }
+      // refresh page
+      window.location.reload()
     }
 
     const handleLogout = () => {
@@ -72,25 +79,40 @@ export default function LoginButton() {
 
   return (
     <>
-      {!loggedIn && (
-        <li
-          className="tooltip tooltip-bottom cursor-pointer"
-          data-tip="Create an account or log in">
-          <a
-            className="font-bold"
-            onClick={() => netlifyIdentity.open('signup')}>
-            Sign up / Log in
-          </a>
-        </li>
-      )}
+      {loggedIn && <>{children}</>}
 
-      {loggedIn && (
+      {!loggedIn && (
         <>
-          <li
-            className="tooltip tooltip-bottom cursor-pointer"
-            data-tip="Log out of your account">
-            <a onClick={() => netlifyIdentity.logout()}>Log out</a>
-          </li>
+          <div className="mx-auto p-8 h-screen overflow-x-hidden flex w-full md:w-1/2 items-center justify-center">
+            <div className="card bg-base-100 shadow-xl w-full">
+              <div className="card-body">
+                <div className="flex flex-col gap-4 justify-between">
+                  <h2 className="card-title">License</h2>
+                  <div>
+                    Please purchase a license to use this product for life, or
+                    log in if you already have a license.
+                  </div>
+                  <div className="flex flex-row gap-8 justify-end flex-wrap items-center">
+                    <a
+                      className="font-bold cursor-pointer"
+                      onClick={() => netlifyIdentity.open('signup')}>
+                      Sign up / Log in
+                    </a>
+                    <Button
+                      icon={<Check />}
+                      type="button"
+                      value="Buy license"
+                      onClick={() => {
+                        window.open(
+                          'https://store.neontomo.com/l/cold-emailer-client?wanted=true'
+                        )
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </>
       )}
     </>

@@ -19,13 +19,14 @@ import {
   Envelope,
   SignIn
 } from '@phosphor-icons/react'
-import { handleCheckLicense } from '@/utils/checkLicense'
-// import LoginButton from '@/components/LoginButton'
-import { checkLoggedIn } from '@/utils/checkLoggedIn'
+import LoggedInElement from '@/components/LoggedInElement'
+import NavBar from '@/components/NavBar'
 
 function Component() {
   const [userLicensed, setUserLicensed] = useState(false)
-  const [tempAPIKey, setTempAPIKey] = useState('')
+  const [tempAPIKey, setTempAPIKey] = useState(
+    localStorage.getItem('resend_tempAPIKey') || ''
+  )
 
   const [fromName, setFromName] = useState(
     process.env.NEXT_PUBLIC_RESEND_FROM_NAME || ''
@@ -104,16 +105,23 @@ function Component() {
 
   const handleSendEmail = async () => {
     await axios
-      .post('/api/send', {
-        fromName,
-        fromEmail,
-        toName,
-        toEmail,
-        subject,
-        message,
-        tempAPIKey: tempAPIKey.trim() ? tempAPIKey.trim() : undefined
+      .get('/api/send', {
+        params: {
+          fromName,
+          fromEmail,
+          toName,
+          toEmail,
+          subject,
+          message,
+          tempAPIKey
+        }
       })
       .then((res) => {
+        if (res.data.error) {
+          console.error(res.data.error)
+          createAlert(`Error: ${res.data.error.message}`, 'error')
+          return
+        }
         console.log(res.data)
         createAlert(`Email sent to: ${toEmail}`, 'success')
       })
@@ -125,56 +133,16 @@ function Component() {
           return
         } else {
           console.error(error)
-          createAlert('An error occurred', 'error')
+          createAlert(`Error: ${error}`, 'error')
         }
       })
   }
 
-  async function handleCheckLoggedIn() {
-    const session = await checkLoggedIn()
-    if (session.loggedIn) {
-      setUserLicensed(true)
-      console.log('logged in')
-    } else {
-      console.log('fuck off')
-    }
-  }
-
-  handleCheckLoggedIn()
-
   return (
     <>
-      {!userLicensed && (
-        <div className="mx-auto p-8 h-screen overflow-x-hidden flex w-full md:w-1/2 items-center justify-center">
-          <div className="card bg-base-100 shadow-xl w-full">
-            <div className="card-body">
-              <div className="flex flex-col gap-4 justify-between">
-                <h2 className="card-title">License</h2>
-                <div>
-                  Please purchase a license to use this product for life, or log
-                  in if you already have a license.
-                </div>
-                <div className="flex flex-row gap-8 justify-end flex-wrap items-center">
-                  {/* <LoginButton /> */}
-                  <Button
-                    icon={<Check />}
-                    type="button"
-                    value="Buy license"
-                    onClick={() => {
-                      window.open(
-                        'https://store.neontomo.com/l/cold-emailer-client?wanted=true'
-                      )
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {userLicensed && (
-        <div className="mx-auto p-8 md:p-8 mb-32 overflow-x-hidden">
+      <NavBar />
+      <LoggedInElement>
+        <div className="mx-auto overflow-x-hidden pt-32 p-8">
           <div className="card bg-base-100 shadow-xl w-full mb-4">
             <div className="card-body pb-4">
               <div className="flex flex-row gap-2 flex-wrap lg:flex-nowrap justify-end">
@@ -362,24 +330,24 @@ function Component() {
                     e.preventDefault()
 
                     const schema = yup.object().shape({
-                      fromName: yup.string().trim().required().min(1).max(50),
+                      fromName: yup.string().trim().required().min(1).max(100),
                       fromEmail: yup
                         .string()
                         .email()
                         .trim()
                         .required()
                         .min(5)
-                        .max(50),
-                      toName: yup.string().trim().max(50),
+                        .max(200),
+                      toName: yup.string().trim().max(100),
                       toEmail: yup
                         .string()
                         .email()
                         .trim()
                         .required()
                         .min(5)
-                        .max(50),
-                      subject: yup.string().trim().required().max(50),
-                      message: yup.string().trim().required().max(1000)
+                        .max(200),
+                      subject: yup.string().trim().required().max(200),
+                      message: yup.string().trim().required().max(5000)
                     })
 
                     schema
@@ -497,11 +465,17 @@ function Component() {
                   <div className="card-actions justify-end">
                     <Input
                       type="text"
-                      placeholder="API key (local and temporary only)"
+                      placeholder="API key (local only)"
                       containerStyle="flex-grow"
                       style="text-xs"
+                      value={tempAPIKey}
                       onChange={(e) => {
                         setTempAPIKey(e.target.value)
+
+                        localStorage.setItem(
+                          'resend_tempAPIKey',
+                          e.target.value
+                        )
                       }}
                     />
                     <Button
@@ -558,7 +532,7 @@ function Component() {
             </div>
           </div>
         </div>
-      )}
+      </LoggedInElement>
 
       <div
         id="errors"
