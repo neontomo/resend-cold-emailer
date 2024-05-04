@@ -14,6 +14,7 @@ This project is a simple client for sending emails through the Resend.com API. I
 - Form validation using Yup
 - Alerts for successful email sends and errors
 - Instant preview of the rendered email
+- Support for temporary & local API key or saved in `.env`
 
 ## Installation
 
