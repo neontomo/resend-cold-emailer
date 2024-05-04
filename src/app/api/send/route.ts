@@ -4,7 +4,17 @@ import dayjs from 'dayjs'
 
 export async function POST(req: Request, res: Response) {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    const {
+      fromName,
+      fromEmail,
+      toName,
+      toEmail,
+      subject,
+      message,
+      tempAPIKey
+    } = await req.json()
+
+    if (!process.env.RESEND_API_KEY && !tempAPIKey) {
       console.log('Error', 'RESEND_API_KEY is not set')
       return NextResponse.json(
         {
@@ -15,9 +25,8 @@ export async function POST(req: Request, res: Response) {
       )
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    const { fromName, fromEmail, toName, toEmail, subject, message } =
-      await req.json()
+    const finalAPIKey = tempAPIKey ? tempAPIKey : process.env.RESEND_API_KEY
+    const resend = new Resend(finalAPIKey)
 
     const messageProcessed = message
       .replace(/{fromName}/g, fromName)

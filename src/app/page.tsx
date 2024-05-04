@@ -10,6 +10,8 @@ import Footer from './components/Footer'
 import Alert from './components/Alert'
 
 function Component() {
+  const [tempAPIKey, setTempAPIKey] = useState('')
+
   const [fromName, setFromName] = useState(
     process.env.NEXT_PUBLIC_RESEND_FROM_NAME || ''
   )
@@ -60,16 +62,18 @@ function Component() {
         toName,
         toEmail,
         subject,
-        message
+        message,
+        tempAPIKey: tempAPIKey.trim() ? tempAPIKey.trim() : undefined
       })
       .then((res) => {
         console.log(res.data)
-        createAlert('Email sent', 'success')
+        createAlert(`Email sent to: ${toEmail}`, 'success')
       })
       .catch((error) => {
         if (error.response.data.error) {
           console.error(error.response.data.error)
           createAlert(error.response.data.error, 'error')
+
           return
         } else {
           console.error(error)
@@ -220,6 +224,15 @@ function Component() {
                   }}></textarea>
 
                 <div className="card-actions justify-end">
+                  <Input
+                    type="text"
+                    placeholder="API key (local and temporary only)"
+                    containerStyle="flex-grow"
+                    style="text-xs"
+                    onChange={(e) => {
+                      setTempAPIKey(e.target.value)
+                    }}
+                  />
                   <button
                     className="btn btn-neutral"
                     type="submit">

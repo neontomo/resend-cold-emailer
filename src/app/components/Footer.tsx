@@ -16,7 +16,7 @@ function Footer() {
           </p>
         </aside>
         <nav className="grid-flow-col gap-8 md:place-self-center md:justify-self-end">
-          <a href="#">Repo</a>
+          <a href="https://github.com/neontomo/simple-resend-emailer">Repo</a>
           <a
             href="https://github.com/neontomo"
             target="_blank"
