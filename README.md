@@ -4,7 +4,7 @@ This project is a simple client for sending emails through the Resend.com API. I
 
 # screenshot
 
-![resend-emailer-screenshot](https://github.com/neontomo/simple-resend-emailer/assets/105588693/45d02542-d42d-4508-b14e-d9b6a915a613)
+![resend-emailer-screenshot](https://github.com/neontomo/simple-resend-emailer/assets/105588693/555ee0ea-ba06-45cc-a9bc-86198bc1fb5d)
 
 ## Features
 
