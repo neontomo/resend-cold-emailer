@@ -1,41 +1,79 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Simple Resend Client
 
-## Getting Started
+This project is a simple client for sending emails through the Resend.com API. It's built with React and uses Axios for API calls, Yup for form validation, and Day.js for date and time formatting.
 
-First, run the development server:
+# screenshot
+
+![resend-emailer-screenshot](https://github.com/neontomo/simple-resend-emailer/assets/105588693/45d02542-d42d-4508-b14e-d9b6a915a613)
+
+## Features
+
+- Send emails using the Resend.com API
+- Great for cold email outreach
+- Support for variables in messages (e.g. `{fromName}`, `{toName}`, `{fromEmail}`, `{toEmail}`, `{currentDate}`, `{currentTime}`)
+- Form validation using Yup
+- Alerts for successful email sends and errors
+- Instant preview of the rendered email
+
+## Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/neontomo/simple-resend-emailer.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to the project directory:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd simple-resend-emailer
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Install the dependencies with your package manager of choice:
 
-## Learn More
+```bash
+yarn install # yarn
+npm install # npm
+pnpm install # pnpm
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Generate an API key from Resend.com and set up your custom domain DNS records:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- https://resend.com/api-keys
+- https://resend.com/domains
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+5. Modify the `.env` file in the project root to include your Resend API key:
 
-## Deploy on Vercel
+```bash
+RESEND_API_KEY="your-api-goes-key-here"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+6. Edit your default email templates in the `.env` file, or make them blank:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-=======
-# simple-resend-emailer
-Send emails through the Resend.com API - a simple client
->>>>>>> 183bd78e2fd0724688a796424c6b281ceb985899
+```bash
+NEXT_PUBLIC_RESEND_FROM_NAME="Tomo"
+NEXT_PUBLIC_RESEND_FROM_EMAIL="tomo@email.neontomo.com"
+NEXT_PUBLIC_RESEND_SUBJECT="Can I help you get more customers?"
+NEXT_PUBLIC_RESEND_MESSAGE="Hi, {toName}!\n\nI hope you're doing well. I'm {fromName}, and I help businesses like yours get more customers.\n\nI'd love to learn more about your business and see if I can help you grow.\n\nDo you have time for a quick chat this week?\n\nKind regards,\n{fromName}"
+```
+
+7. Start the development server:
+
+```bash
+yarn dev # yarn
+npm run dev # npm
+pnpm dev # pnpm
+```
+
+8. Open your browser and navigate to http://localhost:3000.
+
+## Usage
+
+1. Fill out the form with the recipient's name, email address, your name and email address, a subject line and message.
+2. Click the "Send Email" button.
+3. If the email is sent successfully, you will see a success alert.
+4. If there is an error, you will see an error alert.
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
