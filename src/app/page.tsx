@@ -132,7 +132,7 @@ function Component() {
       <div className="mx-auto p-8 md:p-8 mb-32 overflow-x-hidden">
         <div className="card bg-base-100 shadow-xl w-full mb-4">
           <div className="card-body pb-4">
-            <div className="flex flex-row gap-2 flex-wrap lg:flex-nowrap">
+            <div className="flex flex-row gap-2 flex-wrap lg:flex-nowrap justify-end">
               <Input
                 id="contacts-list"
                 type="text"
@@ -180,7 +180,7 @@ function Component() {
             <div className="card-body">
               <div className="flex flex-row gap-2 justify-between">
                 <h2 className="card-title">
-                  Send email{' '}
+                  Compose email{' '}
                   {contacts &&
                     `(${currentContactIndex + 1} of ${
                       contacts.split(',').length

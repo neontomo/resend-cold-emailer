@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <>
-      <footer className="fixed bottom-0 left-0 footer items-center p-4 bg-neutral text-neutral-content text-xs">
+      <footer className="fixed bottom-0 left-0 footer items-center p-2 bg-neutral text-neutral-content text-xs">
         <aside className="items-center grid-flow-col">
           <p>
             Made by{' '}
