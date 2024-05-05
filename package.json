@@ -8,7 +8,7 @@
     "netlify:build": "netlify build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "netlify deploy --prod"
+    "deploy": "yarn build && netlify build && netlify deploy --prod --dir=.next"
   },
   "dependencies": {
     "@netlify/functions": "^2.6.3",
