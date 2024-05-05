@@ -4,7 +4,7 @@ This project is a simple client for sending emails through the Resend.com API. I
 
 # screenshot
 
-![resend-emailer-screenshot](https://github.com/neontomo/simple-resend-emailer/assets/105588693/555ee0ea-ba06-45cc-a9bc-86198bc1fb5d)
+![resend-emailer-screenshot](https://github.com/neontomo/simple-resend-emailer/assets/105588693/5010862d-ce0b-4945-b488-6884b3a934b4)
 
 ## Features
 
@@ -34,8 +34,8 @@ cd simple-resend-emailer
 
 ```bash
 yarn install # yarn
-npm install # npm
-pnpm install # pnpm
+npm install # or with npm
+pnpm install # or with pnpm
 ```
 
 4. Generate an API key from Resend.com and set up your custom domain DNS records:
@@ -43,7 +43,7 @@ pnpm install # pnpm
 - https://resend.com/api-keys
 - https://resend.com/domains
 
-5. Modify the `.env` file in the project root to include your Resend API key:
+5. Rename the `.env.example` file to `.env` in the project root, and modify it to include your Resend API key:
 
 ```bash
 RESEND_API_KEY="your-api-goes-key-here"
@@ -62,8 +62,8 @@ NEXT_PUBLIC_RESEND_MESSAGE="Hi, {toName}!\n\nI hope you're doing well. I'm {from
 
 ```bash
 yarn dev # yarn
-npm run dev # npm
-pnpm dev # pnpm
+npm run dev # or with npm
+pnpm dev # or with pnpm
 ```
 
 8. Open your browser and navigate to http://localhost:3000.
