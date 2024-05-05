@@ -1,0 +1,10 @@
+# example netlify.toml
+[build]
+  command = "yarn run build"
+  functions = "netlify/functions"
+  publish = ".next"
+
+  [[redirects]]
+    from = "/api/*"
+    to = "/.netlify/functions/api/:splat"
+    status = 200
