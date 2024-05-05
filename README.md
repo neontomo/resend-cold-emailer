@@ -35,8 +35,8 @@ cd simple-resend-emailer
 
 ```bash
 yarn install # yarn
-npm install # npm
-pnpm install # pnpm
+npm install # or with npm
+pnpm install # or with pnpm
 ```
 
 4. Generate an API key from Resend.com and set up your custom domain DNS records:
@@ -63,8 +63,8 @@ NEXT_PUBLIC_RESEND_MESSAGE="Hi, {toName}!\n\nI hope you're doing well. I'm {from
 
 ```bash
 yarn dev # yarn
-npm run dev # npm
-pnpm dev # pnpm
+npm run dev # or with npm
+pnpm dev # or with pnpm
 ```
 
 8. Open your browser and navigate to http://localhost:3000.
