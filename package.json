@@ -4,31 +4,41 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && netlify build && netlify deploy",
+    "build": "next build",
+    "netlify:build": "netlify build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "netlify deploy --prod"
   },
   "dependencies": {
+    "@netlify/functions": "^2.6.3",
     "@phosphor-icons/react": "^2.1.5",
+    "@types/express": "^4.17.21",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
-    "next": "14.2.3",
+    "express": "^4.19.2",
+    "i": "^0.3.7",
+    "mongodb": "^6.6.0",
+    "netlify-identity-widget": "^1.9.2",
+    "next": "^14.2.3",
     "phosphor-icons": "^1.4.2",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "resend": "^3.2.0",
+    "serverless-http": "^3.2.0",
+    "ts-node": "^10.9.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/netlify-identity-widget": "^1.9.6",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "10.4.15",
-    "daisyui": "^4.0.5",
+    "@types/react": "18.3.1",
+    "autoprefixer": "^10.4.19",
+    "daisyui": "^4.10.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
     "typescript": "^5"
   }
 }

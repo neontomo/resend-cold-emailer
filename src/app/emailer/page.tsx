@@ -1,27 +1,25 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Input from '../components/Input'
-import Button from '../components/Button'
+import Input from '../../components/Input'
+import Button from '../../components/Button'
 import axios from 'axios'
 import * as yup from 'yup'
-import Code from '../components/Code'
+import Code from '../../components/Code'
 import dayjs from 'dayjs'
-import Footer from '../components/Footer'
-import Alert from '../components/Alert'
+import Footer from '../../components/Footer'
+import Alert from '../../components/Alert'
 import {
   ArrowLineLeft,
   ArrowLineRight,
   ArrowLeft,
   ArrowRight,
   Check,
-  Upload,
-  CircleNotch,
   Spinner,
   Envelope,
   SignIn
 } from '@phosphor-icons/react'
-import { handleCheckLicense } from '../utils/checkLicense'
+import { handleCheckLicense } from '../../utils/checkLicense'
 
 function Component() {
   const [validLicense, setValidLicense] = useState(false)
