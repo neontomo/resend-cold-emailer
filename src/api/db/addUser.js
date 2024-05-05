@@ -1,15 +1,17 @@
 const { client, setup } = require('./client')
-const { getUser } = require('./findUser')
+const { findUser } = require('./findUser')
 const { updateUser } = require('./updateUser')
+const { checkLicense } = require('./checkLicense')
 
 async function addUser(user) {
   try {
     await client.connect()
-    const existingUser = await getUser(user.email)
+    const existingUser = await findUser(user.email)
 
-    if (existingUser.length > 0) {
+    if (existingUser && existingUser.email === user.email) {
       console.log('User with this email already exists, updating...')
       const response = await updateUser(user.email, user)
+      await client.close()
       return response
     }
 

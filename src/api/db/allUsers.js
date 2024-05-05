@@ -1,6 +1,6 @@
 const { client, setup } = require('./client')
 
-async function allUsers(user) {
+async function allUsers() {
   try {
     await client.connect()
     const response = await client

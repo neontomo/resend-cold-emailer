@@ -1,14 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Input from '../../components/Input'
-import Button from '../../components/Button'
+import Input from '@/components/Input'
+import Button from '@/components/Button'
 import axios from 'axios'
 import * as yup from 'yup'
-import Code from '../../components/Code'
+import Code from '@/components/Code'
 import dayjs from 'dayjs'
-import Footer from '../../components/Footer'
-import Alert from '../../components/Alert'
+import Footer from '@/components/Footer'
+import Alert from '@/components/Alert'
 import {
   ArrowLineLeft,
   ArrowLineRight,
@@ -19,10 +19,12 @@ import {
   Envelope,
   SignIn
 } from '@phosphor-icons/react'
-import { handleCheckLicense } from '../../utils/checkLicense'
+import { handleCheckLicense } from '@/utils/checkLicense'
+// import LoginButton from '@/components/LoginButton'
+import { checkLoggedIn } from '@/utils/checkLoggedIn'
 
 function Component() {
-  const [validLicense, setValidLicense] = useState(false)
+  const [userLicensed, setUserLicensed] = useState(false)
   const [tempAPIKey, setTempAPIKey] = useState('')
 
   const [fromName, setFromName] = useState(
@@ -48,17 +50,6 @@ function Component() {
   const createAlert = (text: string, type: string) => {
     setAlerts([{ text, type }, ...alerts])
   }
-
-  const checkLicense = async () => {
-    const productID = 'bJ-NJvJIHf1FwZexc0pyIA=='
-    const licenseKey = '554DB8D9-B3264533-92D4858F-E799DE0F'
-    const valid = await handleCheckLicense({ productID, licenseKey })
-    setValidLicense(valid)
-  }
-
-  useEffect(() => {
-    // checkLicense()
-  }, [])
 
   useEffect(() => {
     if (alerts.length > 0) {
@@ -139,9 +130,21 @@ function Component() {
       })
   }
 
+  async function handleCheckLoggedIn() {
+    const session = await checkLoggedIn()
+    if (session.loggedIn) {
+      setUserLicensed(true)
+      console.log('logged in')
+    } else {
+      console.log('fuck off')
+    }
+  }
+
+  handleCheckLoggedIn()
+
   return (
     <>
-      {!validLicense && (
+      {!userLicensed && (
         <div className="mx-auto p-8 h-screen overflow-x-hidden flex w-full md:w-1/2 items-center justify-center">
           <div className="card bg-base-100 shadow-xl w-full">
             <div className="card-body">
@@ -151,7 +154,8 @@ function Component() {
                   Please purchase a license to use this product for life, or log
                   in if you already have a license.
                 </div>
-                <div className="flex flex-row gap-4 justify-end flex-wrap">
+                <div className="flex flex-row gap-8 justify-end flex-wrap items-center">
+                  {/* <LoginButton /> */}
                   <Button
                     icon={<Check />}
                     type="button"
@@ -162,21 +166,14 @@ function Component() {
                       )
                     }}
                   />
-                  <Button
-                    icon={<SignIn />}
-                    type="button"
-                    value="Log in"
-                    onClick={() => {
-                      //
-                    }}
-                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
       )}
-      {validLicense && (
+
+      {userLicensed && (
         <div className="mx-auto p-8 md:p-8 mb-32 overflow-x-hidden">
           <div className="card bg-base-100 shadow-xl w-full mb-4">
             <div className="card-body pb-4">
@@ -562,6 +559,7 @@ function Component() {
           </div>
         </div>
       )}
+
       <div
         id="errors"
         className="fixed bottom-16 right-4 flex flex-col gap-4">

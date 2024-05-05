@@ -1,4 +1,4 @@
-const express = require('express')
+/* const express = require('express')
 const serverless = require('serverless-http')
 const { getUser } = require('./findUser')
 const { getUserByLicenseKey } = require('./getUserByLicenseKey')
@@ -58,3 +58,4 @@ app.get('/checkLicense/:email/:productID/:licenseKey', async (req, res) => {
 })
 
 module.exports.handler = serverless(app)
+ */
