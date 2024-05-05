@@ -4,17 +4,18 @@ This project is a simple client for sending emails through the Resend.com API. I
 
 # screenshot
 
-![resend-emailer-screenshot](https://github.com/neontomo/simple-resend-emailer/assets/105588693/555ee0ea-ba06-45cc-a9bc-86198bc1fb5d)
+![resend-emailer-screenshot](https://github.com/neontomo/simple-resend-emailer/assets/105588693/5010862d-ce0b-4945-b488-6884b3a934b4)
 
 ## Features
 
 - Send emails using the Resend.com API
 - Great for cold email outreach
+- Load a long batch of emails by comma-separation
 - Support for variables in messages (e.g. `{fromName}`, `{toName}`, `{fromEmail}`, `{toEmail}`, `{currentDate}`, `{currentTime}`)
-- Form validation using Yup
-- Alerts for successful email sends and errors
+- Form validation using Yup - removes invalid emails!
+- Alerts for successful emails / errors
 - Instant preview of the rendered email
-- Support for temporary & local API key or saved in `.env`
+- Support for using temporary API key in browser or save it in `.env`
 
 ## Installation
 
