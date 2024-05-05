@@ -2,12 +2,24 @@
 
 import { useEffect, useState } from 'react'
 import Input from './components/Input'
+import Button from './components/Button'
 import axios from 'axios'
 import * as yup from 'yup'
 import Code from './components/Code'
 import dayjs from 'dayjs'
 import Footer from './components/Footer'
 import Alert from './components/Alert'
+import {
+  ArrowLineLeft,
+  ArrowLineRight,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Upload,
+  CircleNotch,
+  Spinner,
+  Envelope
+} from '@phosphor-icons/react'
 
 function Component() {
   const [tempAPIKey, setTempAPIKey] = useState('')
@@ -20,6 +32,9 @@ function Component() {
   )
   const [toName, setToName] = useState('')
   const [toEmail, setToEmail] = useState('')
+  const [contacts, setContacts] = useState('')
+  const [guessNames, setGuessNames] = useState(true)
+  const [currentContactIndex, setCurrentContactIndex] = useState(0)
   const [subject, setSubject] = useState(
     process.env.NEXT_PUBLIC_RESEND_SUBJECT || ''
   )
@@ -44,6 +59,36 @@ function Component() {
       }
     }
   }, [alerts])
+
+  useEffect(() => {
+    setCurrentContactIndex(0)
+  }, [contacts])
+
+  useEffect(() => {
+    if (contacts) {
+      try {
+        const contactList = contacts.split(',').map((contact) => {
+          return contact.trim()
+        })
+        if (guessNames) {
+          const currentName = contactList[currentContactIndex]
+          const guessedCurrentName = contactList[currentContactIndex]
+            .replace(/[^a-zA-Z].*/g, '')
+            .replace(/^\w/, (c) => c.toUpperCase())
+
+          setToName(guessedCurrentName)
+        } else {
+          setToName('')
+        }
+        setToEmail(contactList[currentContactIndex])
+      } catch (error) {
+        setCurrentContactIndex(0)
+      }
+    } else {
+      setToName('')
+      setToEmail('')
+    }
+  }, [contacts, currentContactIndex, guessNames])
 
   const availableVariables = [
     'fromName',
@@ -84,12 +129,186 @@ function Component() {
 
   return (
     <>
-      <div className="mx-auto p-8 md:p-16 mb-32 overflow-x-hidden">
+      <div className="mx-auto p-8 md:p-8 mb-32 overflow-x-hidden">
+        <div className="card bg-base-100 shadow-xl w-full mb-4">
+          <div className="card-body pb-4">
+            <div className="flex flex-row gap-2 flex-wrap lg:flex-nowrap">
+              <Input
+                id="contacts-list"
+                type="text"
+                placeholder="Comma-separated list of emails (daisy@gmail.com, bobby@yahoo.com, meredith@aol.com, ...)"
+                containerStyle="w-full"
+                style="text-xs"
+              />
+              <Button
+                type="button"
+                value="Load contacts"
+                icon={<Spinner />}
+                onClick={() => {
+                  const contactsList = document.getElementById(
+                    'contacts-list'
+                  ) as HTMLInputElement
+                  contactsList.value = contactsList.value
+                    .split(',')
+                    .map((email) => email.trim())
+                    .filter((email) => yup.string().email().isValidSync(email))
+                    .filter(
+                      (email, index, self) => self.indexOf(email) === index
+                    )
+                    .join(', ')
+                    .replace(/, $/, '')
+                  setContacts(contactsList.value)
+                }}
+              />
+            </div>
+            <div className="flex flex-row justify-end">
+              <Input
+                type="checkbox"
+                defaultChecked={guessNames}
+                onChange={(e) => {
+                  setGuessNames(!guessNames)
+                }}
+                title="Guess names from emails"
+                titleStyle="text-xs"
+                style="checkbox-xs rounded-md"
+              />
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col md:flex-row justify-between gap-16">
           <div className="card bg-base-100 shadow-xl w-full md:w-1/2">
             <div className="card-body">
-              <h2 className="card-title">Send email</h2>
+              <div className="flex flex-row gap-2 justify-between">
+                <h2 className="card-title">
+                  Send email{' '}
+                  {contacts &&
+                    `(${currentContactIndex + 1} of ${
+                      contacts.split(',').length
+                    })`}
+                </h2>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    size="sm"
+                    iconSide="left"
+                    icon={<ArrowLineLeft />}
+                    which="secondary"
+                    disabled={currentContactIndex === 0 || !contacts}
+                    onClick={() => {
+                      if (contacts) {
+                        try {
+                          const contactList = contacts
+                            .split(',')
+                            .map((contact) => {
+                              return contact.trim()
+                            })
 
+                          setCurrentContactIndex(0)
+                        } catch (error) {
+                          console.log(error)
+                        }
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    iconSide="left"
+                    icon={<ArrowLeft />}
+                    which="secondary"
+                    disabled={currentContactIndex === 0 || !contacts}
+                    onClick={() => {
+                      if (contacts) {
+                        try {
+                          const contactList = contacts
+                            .split(',')
+                            .map((contact) => {
+                              return contact.trim()
+                            })
+
+                          if (currentContactIndex > 0) {
+                            setCurrentContactIndex(currentContactIndex - 1)
+                          }
+                        } catch (error) {
+                          setCurrentContactIndex(0)
+                        }
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    iconSide="right"
+                    icon={<ArrowRight />}
+                    which="secondary"
+                    disabled={
+                      currentContactIndex === contacts.split(',').length - 1 ||
+                      !contacts
+                    }
+                    onClick={() => {
+                      if (contacts) {
+                        try {
+                          const contactList = contacts
+                            .split(',')
+                            .map((contact) => {
+                              return contact.trim()
+                            })
+
+                          if (currentContactIndex < contactList.length - 1) {
+                            setCurrentContactIndex(currentContactIndex + 1)
+                          }
+                        } catch (error) {
+                          setCurrentContactIndex(0)
+                        }
+                      }
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    iconSide="right"
+                    icon={<ArrowLineRight />}
+                    which="secondary"
+                    disabled={
+                      currentContactIndex === contacts.split(',').length - 1 ||
+                      !contacts
+                    }
+                    onClick={() => {
+                      if (contacts) {
+                        try {
+                          const contactList = contacts
+                            .split(',')
+                            .map((contact) => {
+                              return contact.trim()
+                            })
+
+                          setCurrentContactIndex(contactList.length - 1)
+                        } catch (error) {
+                          console.log(error)
+                        }
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+              {contacts && (
+                <div className="flex flex-row gap-2 flex-wrap">
+                  {contacts.split(', ').map((contact, index) => (
+                    <Code
+                      key={index}
+                      style={
+                        currentContactIndex === index
+                          ? 'bg-secondary text-white hover:bg-secondary'
+                          : ''
+                      }
+                      onClick={() => {
+                        setCurrentContactIndex(index)
+                      }}>
+                      {contact}
+                    </Code>
+                  ))}
+                </div>
+              )}
               <form
                 className="flex flex-col gap-4 my-4"
                 onSubmit={(e) => {
@@ -134,6 +353,7 @@ function Component() {
                 }}>
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
                   <Input
+                    id="fromName"
                     type="text"
                     title="from"
                     placeholder="from name"
@@ -145,6 +365,7 @@ function Component() {
                     }}
                   />
                   <Input
+                    id="fromEmail"
                     type="email"
                     placeholder="from email"
                     value={fromEmail}
@@ -155,6 +376,7 @@ function Component() {
                     }}
                   />
                   <Input
+                    id="toName"
                     type="text"
                     title="to"
                     placeholder="to name"
@@ -166,6 +388,7 @@ function Component() {
                     }}
                   />
                   <Input
+                    id="toEmail"
                     type="email"
                     placeholder="to email"
                     value={toEmail}
@@ -177,6 +400,7 @@ function Component() {
                   />
 
                   <Input
+                    id="subject"
                     type="text"
                     title="subject"
                     placeholder="subject"
@@ -217,7 +441,7 @@ function Component() {
                 <textarea
                   id="textarea-message"
                   placeholder="message"
-                  className="textarea textarea-bordered textarea-lg h-36 w-full text-sm mb-4"
+                  className="textarea textarea-bordered rounded-xl textarea-lg h-36 w-full text-sm mb-4"
                   value={message}
                   onChange={(e) => {
                     setMessage(e.target.value)
@@ -233,11 +457,24 @@ function Component() {
                       setTempAPIKey(e.target.value)
                     }}
                   />
-                  <button
-                    className="btn btn-neutral"
-                    type="submit">
-                    Send email
-                  </button>
+                  <Button
+                    type="submit"
+                    which="warning"
+                    iconSide="left"
+                    icon={<Envelope />}
+                    disabled={
+                      !fromName ||
+                      !fromEmail ||
+                      !toEmail ||
+                      !subject ||
+                      !message
+                    }
+                    value={
+                      toEmail
+                        ? `Send email to ${toEmail.replace(/[^a-zA-Z].*/g, '')}`
+                        : 'Send email'
+                    }
+                  />
                 </div>
               </form>
             </div>

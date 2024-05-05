@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.5",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
     "next": "14.2.3",
+    "phosphor-icons": "^1.4.2",
     "react": "^18",
     "react-dom": "^18",
     "resend": "^3.2.0",

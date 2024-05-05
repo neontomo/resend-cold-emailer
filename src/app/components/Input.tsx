@@ -9,6 +9,8 @@ function Input({
   required,
   style,
   containerStyle,
+  titleStyle,
+  defaultChecked,
   onChange
 }: {
   id?: string
@@ -19,26 +21,25 @@ function Input({
   required?: boolean
   style?: string
   containerStyle?: string
+  titleStyle?: string
+  defaultChecked?: boolean
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
-  const [inputValue, setInputValue] = useState(value || '')
+  // const [inputValue, setInputValue] = useState(value || '')
   return (
     <>
       {type === 'text' && (
         <label
-          className={`input input-bordered flex items-center gap-2 ${containerStyle}`}>
-          <span
-            id={id}
-            className={`font-bold text-xs`}>
-            {title}
-          </span>
+          className={`input input-bordered flex items-center gap-2 rounded-xl ${containerStyle}`}>
+          <span className={`font-bold text-xs`}>{title}</span>
           <input
+            id={id}
             type="text"
             className={`grow text-sm ${style}`}
             placeholder={placeholder}
-            value={inputValue}
+            value={value}
             onChange={(e) => {
-              setInputValue(e.target.value)
+              // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
             required={required}
@@ -47,7 +48,7 @@ function Input({
       )}
       {type === 'username' && (
         <label
-          className={`input input-bordered flex items-center gap-2 ${containerStyle}`}>
+          className={`input input-bordered flex items-center gap-2 rounded-xl ${containerStyle}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -55,18 +56,15 @@ function Input({
             className="w-4 h-4 opacity-70">
             <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
           </svg>
-          <span
-            id={id}
-            className={`font-bold text-xs`}>
-            {title}
-          </span>
+          <span className={`font-bold text-xs`}>{title}</span>
           <input
+            id={id}
             type="text"
             className={`grow text-sm ${style}`}
             placeholder={placeholder || 'Username'}
-            value={inputValue}
+            value={value}
             onChange={(e) => {
-              setInputValue(e.target.value)
+              // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
             required={required}
@@ -75,7 +73,7 @@ function Input({
       )}
       {type === 'password' && (
         <label
-          className={`input input-bordered flex items-center gap-2 ${containerStyle}`}>
+          className={`input input-bordered flex items-center gap-2 rounded-xl ${containerStyle}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -87,18 +85,15 @@ function Input({
               clipRule="evenodd"
             />
           </svg>
-          <span
-            id={id}
-            className={`font-bold text-xs`}>
-            {title}
-          </span>
+          <span className={`font-bold text-xs`}>{title}</span>
           <input
+            id={id}
             type="password"
             className={`grow text-sm ${style}`}
             placeholder={placeholder || 'Password'}
-            value={inputValue}
+            value={value}
             onChange={(e) => {
-              setInputValue(e.target.value)
+              // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
             required={required}
@@ -107,7 +102,7 @@ function Input({
       )}
       {type === 'email' && (
         <label
-          className={`input input-bordered flex items-center gap-2 ${containerStyle}`}>
+          className={`input input-bordered flex items-center gap-2 rounded-xl ${containerStyle}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -116,18 +111,15 @@ function Input({
             <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
             <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
           </svg>
-          <span
-            id={id}
-            className={`font-bold text-xs`}>
-            {title}
-          </span>
+          <span className={`font-bold text-xs`}>{title}</span>
           <input
+            id={id}
             type="text"
             className={`grow text-sm ${style}`}
             placeholder={placeholder || 'Email'}
-            value={inputValue}
+            value={value}
             onChange={(e) => {
-              setInputValue(e.target.value)
+              // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
             required={required}
@@ -136,14 +128,15 @@ function Input({
       )}
       {type === 'search' && (
         <label
-          className={`input input-bordered flex items-center gap-2 ${containerStyle}`}>
+          className={`input input-bordered flex items-center gap-2 rounded-xl ${containerStyle}`}>
           <input
+            id={id}
             type="text"
             className={`grow text-sm ${style}`}
             placeholder={placeholder || 'Search'}
-            value={inputValue}
+            value={value}
             onChange={(e) => {
-              setInputValue(e.target.value)
+              // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
             required={required}
@@ -163,11 +156,19 @@ function Input({
       )}
 
       {type === 'checkbox' && (
-        <input
-          type="checkbox"
-          defaultChecked
-          className="checkbox"
-        />
+        <label
+          className={`label cursor-pointer flex flex-row gap-4 ${containerStyle}`}>
+          <span className={`label-text ${titleStyle}`}>{title}</span>
+          <input
+            id={id}
+            type="checkbox"
+            defaultChecked={defaultChecked}
+            className={`checkbox ${style}`}
+            onChange={(e) => {
+              onChange && onChange(e)
+            }}
+          />
+        </label>
       )}
     </>
   )
