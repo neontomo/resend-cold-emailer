@@ -19,6 +19,7 @@
     "express": "^4.19.2",
     "i": "^0.3.7",
     "mongodb": "^6.6.0",
+    "netlify-gated-components": "^1.0.9",
     "netlify-identity-widget": "^1.9.2",
     "next": "^14.2.3",
     "phosphor-icons": "^1.4.2",

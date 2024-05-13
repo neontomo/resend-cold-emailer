@@ -29,16 +29,16 @@ function NavBar() {
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li>
+              {/*  <li>
                 <a>Pricing</a>
+              </li> */}
+              <li>
+                <a href="/dashboard">Dashboard</a>
               </li>
               <li>
-                <a href="/dashboard">Demo</a>
+                <a href="mailto:tomo@neontomo.com">Contact</a>
               </li>
-              <li>
-                <a>Contact</a>
-              </li>
-              <LoginButton />
+              {/* <LoginButton /> */}
             </ul>
           </div>
           <a
@@ -54,22 +54,22 @@ function NavBar() {
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-2">
-            <li
+            {/* <li
               className="tooltip tooltip-bottom"
               data-tip="See pricing for Resend Cold Emailer">
               <a>Pricing</a>
-            </li>
+            </li> */}
             <li
               className="tooltip tooltip-bottom"
               data-tip="See a demo">
-              <a href="/dashboard">Demo</a>
+              <a href="/dashboard">Dashboard</a>
             </li>
             <li
               className="tooltip tooltip-bottom"
               data-tip="Contact support">
-              <a>Contact</a>
+              <a href="mailto:tomo@neontomo.com">Contact</a>
             </li>
-            <LoginButton />
+            {/* <LoginButton /> */}
           </ul>
         </div>
       </div>

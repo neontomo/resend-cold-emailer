@@ -1,14 +1,12 @@
 'use client'
 
 import Button from '@/components/Button'
-import LoginButton from '../components/LoginButton'
 import NavBar from '@/components/NavBar'
 
 export default function Index() {
   return (
     <>
       <NavBar />
-
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content min-h-screen flex-col lg:flex-row gap-32 p-4 md:p-8">
           <div>
@@ -19,7 +17,7 @@ export default function Index() {
                 paste your email list, create a template and start making money.
               </div>
               <span className="text-sm text-gray-400">
-                * Requires custom domain and a{' '}
+                * Requires custom domain for emails and a free{' '}
                 <a
                   href="https://resend.com/signup"
                   className="text-secondary opacity-80 tooltip tooltip-bottom"
@@ -49,7 +47,7 @@ export default function Index() {
                   '_blank'
                 )
               }
-              value="Get Resend Cold Emailer"
+              value="Try Resend Cold Emailer"
               style="py-3 px-6 gap-4"
             />
           </div>

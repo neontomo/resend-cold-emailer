@@ -78,7 +78,7 @@ export default function LoginButton() {
           data-tip="Create an account or log in">
           <a
             className="font-bold"
-            onClick={() => netlifyIdentity.open('signup')}>
+            onClick={() => netlifyIdentity.open('login')}>
             Sign up / Log in
           </a>
         </li>

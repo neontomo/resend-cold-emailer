@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { env } from 'process'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Simple Resend Client',
-  description: 'A simple client for sending emails through the Resend.com API'
+  title: process.env.WEBSITE_NAME,
+  description: process.env.WEBSITE_DESCRIPTION
 }
 
 export default function RootLayout({

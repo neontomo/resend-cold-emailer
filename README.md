@@ -1,4 +1,4 @@
-# Simple Resend Client
+# Simple Resend Emailer
 
 This project is a simple client for sending emails through the Resend.com API. It's built with React and uses Axios for API calls, Yup for form validation, and Day.js for date and time formatting.
 
