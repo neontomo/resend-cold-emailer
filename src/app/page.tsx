@@ -43,7 +43,8 @@ export default function Index() {
               size="lg"
               onClick={() =>
                 window.open(
-                  'https://store.neontomo.com/l/cold-emailer-client?wanted=true',
+                  // https://store.neontomo.com/l/cold-emailer-client?wanted=true
+                  '/dashboard',
                   '_blank'
                 )
               }

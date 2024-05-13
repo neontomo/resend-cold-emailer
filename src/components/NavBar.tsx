@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 import LoginButton from './LoginButton'
 
@@ -44,10 +45,12 @@ function NavBar() {
           <a
             className="btn btn-ghost text-xl"
             href="/">
-            <img
+            <Image
               src="/logo.png"
               alt="logo"
-              className="w-8 h-8 mr-2 rounded-lg"
+              width={32}
+              height={32}
+              className="rounded-lg mr-2"
             />
             Resend Cold Emailer
           </a>

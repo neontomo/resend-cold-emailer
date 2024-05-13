@@ -25,9 +25,7 @@ import GatedComponent from 'netlify-gated-components'
 import NavBar from '@/components/NavBar'
 
 function Component() {
-  const [tempAPIKey, setTempAPIKey] = useState(
-    localStorage.getItem('resend_tempAPIKey') || ''
-  )
+  const [tempAPIKey, setTempAPIKey] = useState('')
 
   const [fromName, setFromName] = useState(
     process.env.NEXT_PUBLIC_RESEND_FROM_NAME || ''
@@ -505,14 +503,12 @@ function Component() {
                 <div className="card-actions justify-end">
                   <Input
                     type="text"
-                    placeholder="API key (local only)"
+                    placeholder="API key (not saved)"
                     containerStyle="flex-grow"
                     style="text-xs"
                     value={tempAPIKey}
                     onChange={(e) => {
                       setTempAPIKey(e.target.value)
-
-                      localStorage.setItem('resend_tempAPIKey', e.target.value)
                     }}
                   />
                   <Button
