@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <>
-      <footer className="fixed bottom-0 left-0 footer items-center p-2 bg-neutral text-neutral-content text-xs">
+      <footer className="footer items-center p-16 bg-neutral text-neutral-content text-xs">
         <aside className="items-center grid-flow-col">
           <p>
             Made by{' '}
@@ -16,7 +16,6 @@ function Footer() {
           </p>
         </aside>
         <nav className="grid-flow-col gap-8 md:place-self-center md:justify-self-end">
-          <a href="https://github.com/neontomo/simple-resend-emailer">Repo</a>
           <a
             href="https://github.com/neontomo"
             target="_blank"

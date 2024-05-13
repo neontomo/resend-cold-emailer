@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
+import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { env } from 'process'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,6 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html data-theme="cupcake">
+      <Head>
+        <script
+          async
+          src="https://unpkg.com/@phosphor-icons/web"></script>
+      </Head>
       <body className={inter.className}>{children}</body>
     </html>
   )
