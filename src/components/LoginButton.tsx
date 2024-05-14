@@ -3,7 +3,7 @@
 import netlifyIdentity from 'netlify-identity-widget'
 import { useState, useEffect } from 'react'
 
-export default function LoginButton() {
+export default function LoginButton({ settings }: { settings?: boolean }) {
   const [loggedIn, setLoggedIn] = useState(false)
   const [username, setUsername] = useState('')
   const [netlifyInitSet, setNetlifyInitSet] = useState(false)
@@ -59,15 +59,17 @@ export default function LoginButton() {
   return (
     <>
       {!loggedIn && (
-        <li
-          className="tooltip tooltip-bottom cursor-pointer"
-          data-tip="Create an account or log in">
-          <a
-            className="font-bold"
-            onClick={() => netlifyIdentity.open('login')}>
-            Sign up / Log in
-          </a>
-        </li>
+        <>
+          <li
+            className="tooltip tooltip-bottom cursor-pointer"
+            data-tip="Create an account or log in">
+            <a
+              className="font-bold"
+              onClick={() => netlifyIdentity.open('login')}>
+              Sign up / Log in
+            </a>
+          </li>
+        </>
       )}
 
       {loggedIn && (
@@ -75,8 +77,15 @@ export default function LoginButton() {
           <li
             className="tooltip tooltip-bottom cursor-pointer"
             data-tip="Log out of your account">
-            <a onClick={() => netlifyIdentity.logout()}>Log out</a>
+            <a onClick={() => netlifyIdentity.logout()}>Log out ({username})</a>
           </li>
+          {settings && (
+            <li
+              className="tooltip tooltip-bottom"
+              data-tip="Your user settings">
+              <a href="/dashboard#settings">Settings</a>
+            </li>
+          )}
         </>
       )}
     </>

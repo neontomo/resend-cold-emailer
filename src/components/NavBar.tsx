@@ -72,7 +72,7 @@ function NavBar() {
               data-tip="Contact support">
               <a href="mailto:tomo@neontomo.com">Contact</a>
             </li>
-            <LoginButton />
+            <LoginButton settings={true} />
           </ul>
         </div>
       </div>

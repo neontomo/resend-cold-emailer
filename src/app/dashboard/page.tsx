@@ -17,6 +17,7 @@
 - features list more complete
 - remove local only copy
 - replace <img> with Image component
+- default value if a variable is not found but used: {toName || 'friend'}
 */
 
 'use client'
@@ -630,6 +631,8 @@ function Component() {
                       />
                     </div>
                     <div className="flex flex-col gap-4 mt-4">
+                      <h5>Variables</h5>
+
                       <div className="flex gap-2 items-center flex-wrap">
                         {availableVariables.map((variable, index) => (
                           <Code
@@ -692,7 +695,28 @@ function Component() {
                         type="button"
                         which="danger"
                         value="Batch send"
-                        onClick={getTemplate}
+                        onClick={() => {
+                          const areYouSure = prompt(
+                            'Are you sure you want to batch send?\n\nThis will send an email to each contact in the list, one by one, with the same message template and subject.\n\nThere is a delay of 1 second between each email. Enter "yes" to confirm.',
+                            ''
+                          )
+                          if (areYouSure === 'yes') {
+                            const contactList = contacts
+                              .split(',')
+                              .map((email) => {
+                                return email.trim()
+                              })
+
+                            contactList.forEach((contact, index) => {
+                              setTimeout(() => {
+                                setCurrentContactIndex(index)
+                                setTimeout(() => {
+                                  handleSendEmail()
+                                }, 10)
+                              }, index * 2000)
+                            })
+                          }
+                        }}
                       />
                     </div>
                   </form>
@@ -703,13 +727,19 @@ function Component() {
                 <div className="card-body">
                   <h2 className="card-title">Rendered email</h2>
                   <div className="flex flex-col gap-4 mt-4">
-                    <Code style="col-span-6 break-words">
-                      From: {fromName} &lt;{fromEmail}&gt;
+                    <Code
+                      errorCondition={!fromName.trim()}
+                      style={`col-span-6 break-words`}>
+                      From: {fromName?.trim()} &lt;{fromEmail?.trim()}&gt;
                     </Code>
-                    <Code style="col-span-6 break-words">
-                      To: {toName} &lt;{toEmail}&gt;
+                    <Code
+                      errorCondition={!toEmail.trim()}
+                      style={`col-span-6 break-words`}>
+                      To: {toName?.trim()} &lt;{toEmail?.trim()}&gt;
                     </Code>
-                    <Code style="col-span-6 break-words">
+                    <Code
+                      errorCondition={!subject.trim()}
+                      style={`col-span-6 break-words`}>
                       Subject: {subject}
                     </Code>
                   </div>
@@ -717,10 +747,10 @@ function Component() {
                   <div className="mt-8">
                     <p className="whitespace-pre-wrap break-words">
                       {message
-                        .replace(/{fromName}/g, fromName)
-                        .replace(/{toName}/g, toName)
-                        .replace(/{fromEmail}/g, fromEmail)
-                        .replace(/{toEmail}/g, toEmail)
+                        .replace(/{fromName}/g, fromName?.trim())
+                        .replace(/{toName}/g, toName?.trim() || 'friend')
+                        .replace(/{fromEmail}/g, fromEmail?.trim())
+                        .replace(/{toEmail}/g, toEmail?.trim())
                         .replace(/{currentDate}/g, dayjs().format('YYYY-MM-DD'))
                         .replace(/{currentTime}/g, dayjs().format('HH:mm'))}
                     </p>
@@ -728,7 +758,9 @@ function Component() {
                 </div>
               </div>
 
-              <div className="card bg-base-100 shadow-xl w-full">
+              <div
+                id="settings"
+                className="card bg-base-100 shadow-xl w-full">
                 <div className="card-body">
                   <h2 className="card-title mb-4">Settings</h2>
 
