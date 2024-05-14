@@ -50,7 +50,7 @@ import netlifyIdentity from 'netlify-identity-widget'
 import GatedComponent from 'netlify-gated-components'
 import NavBar from '@/components/NavBar'
 import { checkLicenseAsync } from '@/utils/checkLicense'
-import LoginScreen from '../loginscreen/page'
+import LoginScreen from '../login/page'
 import { availableVariables } from '@/components/Code'
 import { getSettings, getTemplate } from '@/utils/template'
 import Loading from '@/components/Loading'
@@ -255,12 +255,7 @@ function Component() {
             loggedIn={loggedIn}
           />
         }>
-        {!licensedUser && (
-          <LoginScreen
-            netlifyIdentity={netlifyIdentity}
-            loggedIn={loggedIn}
-          />
-        )}
+        {!licensedUser && (window.location.href = '/login')}
 
         {licensedUser && (
           <div className="mx-auto overflow-x-hidden py-32 p-8">

@@ -1,16 +1,19 @@
+'use client'
 import React, { useState } from 'react'
 import { Check, Ticket } from '@phosphor-icons/react'
 import Button from '@/components/Button'
 import Input from '@/components/Input'
 import { addLicenseToUser } from '@/utils/checkLicense'
+import netlifyIdentity from 'netlify-identity-widget'
+import GatedComponent from 'netlify-gated-components'
 
-export default function LoginScreen({
-  netlifyIdentity,
-  loggedIn = false
-}: {
-  netlifyIdentity: any
-  loggedIn?: boolean
-}) {
+function LoginScreen() {
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  netlifyIdentity.on('login', () => {
+    setLoggedIn(true)
+  })
+
   return (
     <>
       <div className="mx-auto p-8 h-screen overflow-x-hidden flex w-full md:w-1/2 items-center justify-center">
@@ -81,3 +84,5 @@ export default function LoginScreen({
     </>
   )
 }
+
+export default LoginScreen
