@@ -6,6 +6,7 @@ async function sendEmail({
   fromEmail,
   toName,
   toEmail,
+  replyTo,
   subject,
   message,
   tempAPIKey
@@ -34,6 +35,7 @@ async function sendEmail({
       fromEmail: fromEmail,
       toName: toName,
       toEmail: toEmail,
+      replyTo: replyTo,
       subject: subject,
       message: message,
       messageProcessed
@@ -43,6 +45,7 @@ async function sendEmail({
       !fromName ||
       !fromEmail ||
       !toEmail ||
+      !replyTo ||
       !subject ||
       !message ||
       !messageProcessed
@@ -54,7 +57,8 @@ async function sendEmail({
       from: `${fromName.trim()} <${fromEmail.trim()}>`,
       to: [toEmail.trim()],
       subject: subject.trim(),
-      text: messageProcessed
+      text: messageProcessed,
+      replyTo: replyTo.trim()
     })
 
     if (data.error) {

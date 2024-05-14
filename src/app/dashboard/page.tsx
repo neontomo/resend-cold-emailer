@@ -168,6 +168,7 @@ function Component() {
       fromEmail,
       toName,
       toEmail,
+      replyTo: replyTo ? replyTo : fromEmail,
       subject,
       message,
       tempAPIKey

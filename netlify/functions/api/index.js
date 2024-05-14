@@ -49,6 +49,7 @@ router.get('/send', async (req, res) => {
     fromName: req.query.fromName,
     fromEmail: req.query.fromEmail,
     toName: req.query.toName,
+    replyTo: req.query.replyTo,
     toEmail: req.query.toEmail,
     subject: req.query.subject,
     message: req.query.message,
