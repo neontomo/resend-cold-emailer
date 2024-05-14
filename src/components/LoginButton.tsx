@@ -83,7 +83,7 @@ export default function LoginButton({ settings }: { settings?: boolean }) {
             <li
               className="tooltip tooltip-bottom"
               data-tip="Your user settings">
-              <a href="/dashboard#settings">Settings</a>
+              <a href="/settings">Settings</a>
             </li>
           )}
         </>

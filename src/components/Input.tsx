@@ -1,5 +1,4 @@
-import { Question } from '@phosphor-icons/react'
-import { useState } from 'react'
+import helpComponent from '@/components/HelpComponent'
 
 function Input({
   id,
@@ -13,6 +12,7 @@ function Input({
   titleStyle,
   defaultChecked,
   help,
+  helpDirection = 'left',
   onChange,
   onBlur
 }: {
@@ -27,20 +27,11 @@ function Input({
   titleStyle?: string
   defaultChecked?: boolean
   help?: string
+  helpDirection?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
 }) {
   // const [inputValue, setInputValue] = useState(value || '')
-
-  const helpComponent = ({ help }: { help: string }) => {
-    return (
-      <span
-        className={`text-sm text-gray-500 tooltip tooltip-bottom`}
-        data-tip={help}>
-        <Question />
-      </span>
-    )
-  }
 
   return (
     <>
@@ -63,7 +54,7 @@ function Input({
             }}
             required={required}
           />
-          {help && helpComponent({ help })}
+          {help && helpComponent({ help, direction: helpDirection })}
         </label>
       )}
 
@@ -93,7 +84,7 @@ function Input({
             }}
             required={required}
           />
-          {help && helpComponent({ help })}
+          {help && helpComponent({ help, direction: helpDirection })}
         </label>
       )}
 
@@ -127,7 +118,7 @@ function Input({
             }}
             required={required}
           />
-          {help && helpComponent({ help })}
+          {help && helpComponent({ help, direction: helpDirection })}
         </label>
       )}
       {type === 'email' && (
@@ -157,7 +148,7 @@ function Input({
             }}
             required={required}
           />
-          {help && helpComponent({ help })}
+          {help && helpComponent({ help, direction: helpDirection })}
         </label>
       )}
       {type === 'search' && (
@@ -189,7 +180,7 @@ function Input({
               clipRule="evenodd"
             />
           </svg>
-          {help && helpComponent({ help })}
+          {help && helpComponent({ help, direction: helpDirection })}
         </label>
       )}
 

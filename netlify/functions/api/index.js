@@ -53,7 +53,7 @@ router.get('/send', async (req, res) => {
     replyTo: req.query.replyTo,
     subject: req.query.subject,
     message: req.query.message,
-    tempAPIKey: req.query.tempAPIKey
+    resendAPIKey: req.query.resendAPIKey
   })
   res.send(response)
 })

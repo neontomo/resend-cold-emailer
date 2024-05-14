@@ -9,15 +9,15 @@ async function sendEmail({
   replyTo,
   subject,
   message,
-  tempAPIKey
+  resendAPIKey
 }) {
   try {
-    if (!process.env.RESEND_API_KEY && !tempAPIKey) {
+    if (!process.env.RESEND_API_KEY && !resendAPIKey) {
       console.log('Error', 'RESEND_API_KEY is not set')
       return { error: 'RESEND_API_KEY is not set' }
     }
 
-    const finalAPIKey = tempAPIKey ? tempAPIKey : process.env.RESEND_API_KEY
+    const finalAPIKey = resendAPIKey ? resendAPIKey : process.env.RESEND_API_KEY
 
     const resend = new Resend(finalAPIKey)
 

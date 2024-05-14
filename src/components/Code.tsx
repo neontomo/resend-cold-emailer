@@ -1,3 +1,13 @@
+export const availableVariables = [
+  'fromName',
+  'fromFirstName',
+  'toName',
+  'fromEmail',
+  'toEmail',
+  'currentDate',
+  'currentTime'
+]
+
 function Component({
   children,
   onClick,
@@ -13,7 +23,7 @@ function Component({
 }) {
   return (
     <code
-      className={`tooltip tooltip-bottom text-left text-xs py-2 px-4 rounded-xl cursor-pointer bg-gray-200 hover:bg-gray-300 transition-all ${style} ${
+      className={`tooltip tooltip-bottom text-left text-xs py-1 px-2 rounded-xl cursor-pointer bg-gray-200 hover:bg-gray-300 transition-all ${style} ${
         errorCondition ? 'text-red-400' : 'text-gray-600'
       }`}
       onClick={onClick}
