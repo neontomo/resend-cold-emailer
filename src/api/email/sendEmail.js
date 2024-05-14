@@ -58,7 +58,7 @@ async function sendEmail({
       to: [toEmail.trim()],
       subject: subject.trim(),
       text: messageProcessed,
-      replyTo: replyTo.trim()
+      reply_to: replyTo.trim()
     })
 
     if (data.error) {

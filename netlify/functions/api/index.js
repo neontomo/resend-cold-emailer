@@ -8,7 +8,7 @@ router.use(express.json())
 
 // check if in production:
 
-router.get('/allUsers', async (req, res) => {
+/* router.get('/allUsers', async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.send({ message: 'Not allowed' })
     return
@@ -16,7 +16,7 @@ router.get('/allUsers', async (req, res) => {
   const { allUsers } = require('../../../src/api/db/allUsers')
   const response = await allUsers()
   res.send(response)
-})
+}) */
 
 router.get('/checkLicense/:email/:productID', async (req, res) => {
   const { checkLicense } = require('../../../src/api/db/checkLicense')
@@ -28,7 +28,7 @@ router.get('/checkLicense/:email/:productID', async (req, res) => {
   res.send(response)
 })
 
-router.get('/addUser/:email/:productID/:licenseKey', async (req, res) => {
+/* router.get('/addUser/:email/:productID/:licenseKey', async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.send({ message: 'Not allowed' })
     return
@@ -41,7 +41,7 @@ router.get('/addUser/:email/:productID/:licenseKey', async (req, res) => {
     licenseKey: req.params.licenseKey
   })
   res.send(response)
-})
+}) */
 
 router.get('/send', async (req, res) => {
   const { sendEmail } = require('../../../src/api/email/sendEmail')
@@ -49,8 +49,8 @@ router.get('/send', async (req, res) => {
     fromName: req.query.fromName,
     fromEmail: req.query.fromEmail,
     toName: req.query.toName,
-    replyTo: req.query.replyTo,
     toEmail: req.query.toEmail,
+    replyTo: req.query.replyTo,
     subject: req.query.subject,
     message: req.query.message,
     tempAPIKey: req.query.tempAPIKey
