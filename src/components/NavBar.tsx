@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import React from 'react'
-import LoginButton from './LoginButton'
+import LoginButton from '@/components/LoginButton'
 
 function NavBar() {
   return (
@@ -39,7 +39,7 @@ function NavBar() {
               <li>
                 <a href="mailto:tomo@neontomo.com">Contact</a>
               </li>
-              {/* <LoginButton /> */}
+              <LoginButton />
             </ul>
           </div>
           <a
@@ -72,7 +72,7 @@ function NavBar() {
               data-tip="Contact support">
               <a href="mailto:tomo@neontomo.com">Contact</a>
             </li>
-            {/* <LoginButton /> */}
+            <LoginButton />
           </ul>
         </div>
       </div>

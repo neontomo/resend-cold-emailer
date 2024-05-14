@@ -3,8 +3,36 @@
 import Button from '@/components/Button'
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
+import { ChartLine, Envelope, File, Lock } from '@phosphor-icons/react'
 
 export default function Index() {
+  const featuresList = [
+    {
+      icon: <File />,
+      title: 'Email Templates',
+      description:
+        'Create email templates with useful variables like first name, last name, your name, current date, etc, and send to your email lists.'
+    },
+    {
+      icon: <Envelope />,
+      title: 'Email Lists',
+      description:
+        'Enter a comma-separated list of emails and send one at a time, and choose whether to let the software guess the name of the person.'
+    },
+    {
+      icon: <Lock />,
+      title: 'Secure',
+      description:
+        'Your data is secure and encrypted with the latest technology.'
+    },
+    {
+      icon: <ChartLine />,
+      title: 'Email Tracking',
+      description:
+        'Track the progress of your email campaigns and see who has opened your emails by using the resend.com dashboard.'
+    }
+  ]
+
   return (
     <>
       <NavBar />
@@ -44,12 +72,11 @@ export default function Index() {
               size="lg"
               onClick={() =>
                 window.open(
-                  // https://store.neontomo.com/l/cold-emailer-client?wanted=true
-                  '/dashboard',
+                  'https://store.neontomo.com/l/cold-emailer-client?wanted=true',
                   '_blank'
                 )
               }
-              value="Try Resend Cold Emailer"
+              value="Buy Resend Cold Emailer"
               style="py-3 px-6 gap-4"
             />
           </div>
@@ -63,54 +90,17 @@ export default function Index() {
       <div className="gap-8 py-32 px-4 md:px-8 bg-white">
         <h2 className="text-4xl font-bold text-center mb-16">Features</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-16 w-1/2 mx-auto">
-          <div className="flex flex-col gap-4">
-            <h3 className="text-2xl font-bold items-center flex">
-              <i
-                className="ph-fill ph-file-dashed text-2xl mr-2
-              "></i>
-              Email Templates
-            </h3>
-            <p>
-              Create email templates with useful variables like first name, last
-              name, your name, current date, etc, and send to your email lists.
-            </p>
-          </div>
-          <div className="flex flex-col gap-4">
-            <h3 className="text-2xl font-bold items-center flex">
-              <i
-                className="ph-fill ph-envelope text-2xl mr-2
-                "></i>
-              Email Lists
-            </h3>
-            <p>
-              Enter a comma-separated list of emails and send one at a time, and
-              choose whether to let the software guess the name of the person.
-            </p>
-          </div>
-          <div className="flex flex-col gap-4">
-            <h3 className="text-2xl font-bold items-center flex">
-              <i
-                className="ph-fill ph-lock text-2xl mr-2
-                "></i>
-              Local only
-            </h3>
-            <p>
-              Your API key, templates and email lists are deleted after each
-              session for privacy. Make sure to save them to a secure location.
-            </p>
-          </div>
-          <div className="flex flex-col gap-4">
-            <h3 className="text-2xl font-bold items-center flex">
-              <i
-                className="ph-fill ph-chart-line text-2xl mr-2
-                "></i>
-              Email Tracking
-            </h3>
-            <p>
-              Track the progress of your email campaigns and see who has opened
-              your emails by using the resend.com dashboard.
-            </p>
-          </div>
+          {featuresList.map((feature, i) => (
+            <div
+              key={i}
+              className="flex flex-col gap-4">
+              <h3 className="text-2xl font-bold items-center flex gap-2">
+                {feature.icon}
+                {feature.title}
+              </h3>
+              <p>{feature.description}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -136,7 +126,7 @@ export default function Index() {
                 '_blank'
               )
             }
-            value="Try Resend Cold Emailer"
+            value="Buy Resend Cold Emailer"
             style="py-3 px-6 gap-4"
           />
         </div>

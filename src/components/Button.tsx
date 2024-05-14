@@ -45,7 +45,7 @@ function Input({
     primary: 'btn-primary',
     secondary: 'btn-secondary text-white',
     success: 'btn-success',
-    danger: 'btn-danger',
+    danger: 'btn-error',
     warning: 'btn-warning',
     accent: 'btn-accent',
     info: 'btn-info',

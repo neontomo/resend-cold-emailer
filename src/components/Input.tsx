@@ -1,3 +1,4 @@
+import { Question } from '@phosphor-icons/react'
 import { useState } from 'react'
 
 function Input({
@@ -11,7 +12,9 @@ function Input({
   containerStyle,
   titleStyle,
   defaultChecked,
-  onChange
+  help,
+  onChange,
+  onBlur
 }: {
   id?: string
   title?: string
@@ -23,9 +26,22 @@ function Input({
   containerStyle?: string
   titleStyle?: string
   defaultChecked?: boolean
+  help?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void
 }) {
   // const [inputValue, setInputValue] = useState(value || '')
+
+  const helpComponent = ({ help }: { help: string }) => {
+    return (
+      <span
+        className={`text-sm text-gray-500 tooltip tooltip-bottom`}
+        data-tip={help}>
+        <Question />
+      </span>
+    )
+  }
+
   return (
     <>
       {type === 'text' && (
@@ -42,10 +58,15 @@ function Input({
               // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
+            onBlur={(e) => {
+              onBlur && onBlur(e)
+            }}
             required={required}
           />
+          {help && helpComponent({ help })}
         </label>
       )}
+
       {type === 'username' && (
         <label
           className={`input input-bordered flex items-center gap-2 rounded-xl ${containerStyle}`}>
@@ -67,10 +88,15 @@ function Input({
               // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
+            onBlur={(e) => {
+              onBlur && onBlur(e)
+            }}
             required={required}
           />
+          {help && helpComponent({ help })}
         </label>
       )}
+
       {type === 'password' && (
         <label
           className={`input input-bordered flex items-center gap-2 rounded-xl ${containerStyle}`}>
@@ -96,8 +122,12 @@ function Input({
               // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
+            onBlur={(e) => {
+              onBlur && onBlur(e)
+            }}
             required={required}
           />
+          {help && helpComponent({ help })}
         </label>
       )}
       {type === 'email' && (
@@ -122,8 +152,12 @@ function Input({
               // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
+            onBlur={(e) => {
+              onBlur && onBlur(e)
+            }}
             required={required}
           />
+          {help && helpComponent({ help })}
         </label>
       )}
       {type === 'search' && (
@@ -139,6 +173,9 @@ function Input({
               // setInputValue(e.target.value)
               onChange && onChange(e)
             }}
+            onBlur={(e) => {
+              onBlur && onBlur(e)
+            }}
             required={required}
           />
           <svg
@@ -152,6 +189,7 @@ function Input({
               clipRule="evenodd"
             />
           </svg>
+          {help && helpComponent({ help })}
         </label>
       )}
 
@@ -166,6 +204,9 @@ function Input({
             className={`checkbox ${style}`}
             onChange={(e) => {
               onChange && onChange(e)
+            }}
+            onBlur={(e) => {
+              onBlur && onBlur(e)
             }}
           />
         </label>

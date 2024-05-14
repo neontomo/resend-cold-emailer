@@ -6,7 +6,7 @@ const setup = {
   clusterName: 'sidehustlecluster',
   databaseName: 'ResendAccounts',
   collectionName: 'AccountsCollection',
-  testLicenseKey: '554DB8D9-B3264533-92D4858F-E799DE0F'
+  testLicenseKey: 'NOT-A-REAL-KEY-DO-NOT-USE'
 }
 
 const uri = `mongodb+srv://${setup.loginUsername}:${setup.loginPassword}@${setup.clusterName}.o1ce4vr.mongodb.net/${setup.databaseName}?retryWrites=true&w=majority`

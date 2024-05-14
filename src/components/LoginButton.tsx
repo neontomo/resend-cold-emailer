@@ -2,48 +2,35 @@
 
 import netlifyIdentity from 'netlify-identity-widget'
 import { useState, useEffect } from 'react'
-import Button from './Button'
-import axios from 'axios'
 
 export default function LoginButton() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [username, setUsername] = useState('')
   const [netlifyInitSet, setNetlifyInitSet] = useState(false)
-  const [licensedUser, setLicensedUser] = useState(false)
 
   useEffect(() => {
-    netlifyIdentity.init()
-
-    const handleCheckLicenseKey = async () => {
-      const userEmail = netlifyIdentity?.currentUser()?.email
-
-      axios
-        .get(`/api/checkLicense/${userEmail}/bJ-NJvJIHf1FwZexc0pyIA==`)
-        .then((res) => {
-          // console.log(res)
-          if (res.data.success) {
-            setLicensedUser(true)
-          } else {
-            setLicensedUser(false)
-          }
-        })
-    }
-
     const handleLogin = (user: any) => {
       if (!user.user_metadata || !user.user_metadata.full_name) return
       setLoggedIn(true)
       setUsername(user.user_metadata.full_name)
 
       if (!netlifyInitSet) {
-        handleCheckLicenseKey()
+        netlifyIdentity.init()
         setNetlifyInitSet(true)
-        window.location.href = '/dashboard'
+        if (window.location.pathname === '/') {
+          window.location.href = '/dashboard'
+        }
       }
     }
 
     const handleLogout = () => {
       setLoggedIn(false)
       setUsername('')
+    }
+
+    if (!netlifyInitSet) {
+      netlifyIdentity.init()
+      setNetlifyInitSet(true)
     }
 
     netlifyIdentity.on('login', handleLogin)
@@ -59,7 +46,6 @@ export default function LoginButton() {
       setUsername(currentUser.user_metadata.full_name)
 
       if (!netlifyInitSet) {
-        handleCheckLicenseKey()
         setNetlifyInitSet(true)
       }
     }
