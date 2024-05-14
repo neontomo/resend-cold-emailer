@@ -16,6 +16,7 @@
 - documentation/get started page
 - features list more complete
 - remove local only copy
+- replace <img> with Image component
 */
 
 'use client'
@@ -232,8 +233,8 @@ function Component() {
   }
 
   const getTemplate = async () => {
-    const resendAPIKey = await getCustomDataFromUser('resendAPIKey')
-    const replyTo = await getCustomDataFromUser('replyTo')
+    const subject = await getCustomDataFromUser('subject')
+    const message = await getCustomDataFromUser('message')
 
     if (subject) {
       setSubject(subject)
