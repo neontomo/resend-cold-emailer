@@ -5,6 +5,15 @@ export const getGenericJSONHeaders = () => {
   const accessToken = netlifyIdentity?.currentUser()?.token?.access_token
   if (!accessToken) return
 
+  const tokenExpiration = netlifyIdentity?.currentUser()?.token?.expires_at
+  if (tokenExpiration && new Date(tokenExpiration) < new Date()) {
+    console.log('Token expired, refreshing')
+
+    netlifyIdentity.refresh().then((token) => {
+      location.reload()
+    })
+  }
+
   return {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${accessToken}`
