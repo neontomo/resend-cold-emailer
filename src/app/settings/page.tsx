@@ -280,6 +280,20 @@ export default function Settings() {
     <>
       <NavBar />
       <div className="mx-auto overflow-x-hidden py-32 p-8">
+        <div className="card bg-base-100 shadow-xl w-full mb-4">
+          <div className="card-body">
+            <h1 className="card-title">Settings</h1>
+            <div>
+              To use this service you need to set up your settings. The minimum
+              required settings are:
+              <div className="flex flex-row gap-2 mt-4">
+                <Code>Resend API key</Code>
+                <Code>From name</Code>
+                <Code>From email</Code>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {SettingsComponent}
           {templateSettingsComponent}

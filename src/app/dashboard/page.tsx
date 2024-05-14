@@ -203,6 +203,10 @@ function Component() {
       setLoggedIn(true)
 
       getSettings().then((data) => {
+        if (!data.resendAPIKey || !data.fromName || !data.fromEmail) {
+          window.location.href = '/settings'
+          return
+        }
         setResendAPIKey(data.resendAPIKey)
         setFromName(data.fromName)
         setFromEmail(data.fromEmail)
@@ -301,132 +305,10 @@ function Component() {
                     }}
                   />
                 </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="card bg-base-100 shadow-xl w-full">
-                <div className="card-body">
-                  <div className="flex flex-row gap-x-8 justify-start items-center flex-wrap">
-                    <h2 className="card-title items-center mx-auto">
-                      Compose email
-                    </h2>
 
-                    <div className="hidden md:flex gap-2 flex-grow justify-end items-center">
-                      <span className="text-xs text-gray-400 mr-4">
-                        {contacts &&
-                          `(${currentContactIndex + 1} of ${
-                            contacts.split(',').length
-                          })`}
-                      </span>
-                      <Button
-                        type="button"
-                        size="xs"
-                        iconSide="left"
-                        icon={<ArrowLineLeft />}
-                        which="secondary"
-                        disabled={currentContactIndex === 0 || !contacts}
-                        onClick={() => {
-                          if (contacts) {
-                            try {
-                              const contactList = contacts
-                                .split(',')
-                                .map((contact) => {
-                                  return contact.trim()
-                                })
-
-                              setCurrentContactIndex(0)
-                            } catch (error) {
-                              console.log(error)
-                            }
-                          }
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        size="xs"
-                        iconSide="left"
-                        icon={<ArrowLeft />}
-                        which="secondary"
-                        disabled={currentContactIndex === 0 || !contacts}
-                        onClick={() => {
-                          if (contacts) {
-                            try {
-                              const contactList = contacts
-                                .split(',')
-                                .map((contact) => {
-                                  return contact.trim()
-                                })
-
-                              if (currentContactIndex > 0) {
-                                setCurrentContactIndex(currentContactIndex - 1)
-                              }
-                            } catch (error) {
-                              setCurrentContactIndex(0)
-                            }
-                          }
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        size="xs"
-                        iconSide="right"
-                        icon={<ArrowRight />}
-                        which="secondary"
-                        disabled={
-                          currentContactIndex ===
-                            contacts.split(',').length - 1 || !contacts
-                        }
-                        onClick={() => {
-                          if (contacts) {
-                            try {
-                              const contactList = contacts
-                                .split(',')
-                                .map((contact) => {
-                                  return contact.trim()
-                                })
-
-                              if (
-                                currentContactIndex <
-                                contactList.length - 1
-                              ) {
-                                setCurrentContactIndex(currentContactIndex + 1)
-                              }
-                            } catch (error) {
-                              setCurrentContactIndex(0)
-                            }
-                          }
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        size="xs"
-                        iconSide="right"
-                        icon={<ArrowLineRight />}
-                        which="secondary"
-                        disabled={
-                          currentContactIndex ===
-                            contacts.split(',').length - 1 || !contacts
-                        }
-                        onClick={() => {
-                          if (contacts) {
-                            try {
-                              const contactList = contacts
-                                .split(',')
-                                .map((contact) => {
-                                  return contact.trim()
-                                })
-
-                              setCurrentContactIndex(contactList.length - 1)
-                            } catch (error) {
-                              console.log(error)
-                            }
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                  {contacts && (
-                    <div className="flex flex-row mt-4 gap-2 flex-wrap contact-buttons">
+                {contacts && (
+                  <div className="flex flex-row gap-4 my-4 justify-between">
+                    <div className="flex flex-row gap-2 flex-wrap contact-buttons">
                       {contacts.split(', ').map((contact, index) => (
                         <Code
                           key={index}
@@ -442,7 +324,138 @@ function Component() {
                         </Code>
                       ))}
                     </div>
-                  )}
+                    <div className="flex flex-col gap-2">
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          size="xs"
+                          iconSide="left"
+                          icon={<ArrowLineLeft />}
+                          which="secondary"
+                          disabled={currentContactIndex === 0 || !contacts}
+                          onClick={() => {
+                            if (contacts) {
+                              try {
+                                const contactList = contacts
+                                  .split(',')
+                                  .map((contact) => {
+                                    return contact.trim()
+                                  })
+
+                                setCurrentContactIndex(0)
+                              } catch (error) {
+                                console.log(error)
+                              }
+                            }
+                          }}
+                        />
+                        <Button
+                          type="button"
+                          size="xs"
+                          iconSide="left"
+                          icon={<ArrowLeft />}
+                          which="secondary"
+                          disabled={currentContactIndex === 0 || !contacts}
+                          onClick={() => {
+                            if (contacts) {
+                              try {
+                                const contactList = contacts
+                                  .split(',')
+                                  .map((contact) => {
+                                    return contact.trim()
+                                  })
+
+                                if (currentContactIndex > 0) {
+                                  setCurrentContactIndex(
+                                    currentContactIndex - 1
+                                  )
+                                }
+                              } catch (error) {
+                                setCurrentContactIndex(0)
+                              }
+                            }
+                          }}
+                        />
+                        <Button
+                          type="button"
+                          size="xs"
+                          iconSide="right"
+                          icon={<ArrowRight />}
+                          which="secondary"
+                          disabled={
+                            currentContactIndex ===
+                              contacts.split(',').length - 1 || !contacts
+                          }
+                          onClick={() => {
+                            if (contacts) {
+                              try {
+                                const contactList = contacts
+                                  .split(',')
+                                  .map((contact) => {
+                                    return contact.trim()
+                                  })
+
+                                if (
+                                  currentContactIndex <
+                                  contactList.length - 1
+                                ) {
+                                  setCurrentContactIndex(
+                                    currentContactIndex + 1
+                                  )
+                                }
+                              } catch (error) {
+                                setCurrentContactIndex(0)
+                              }
+                            }
+                          }}
+                        />
+                        <Button
+                          type="button"
+                          size="xs"
+                          iconSide="right"
+                          icon={<ArrowLineRight />}
+                          which="secondary"
+                          disabled={
+                            currentContactIndex ===
+                              contacts.split(',').length - 1 || !contacts
+                          }
+                          onClick={() => {
+                            if (contacts) {
+                              try {
+                                const contactList = contacts
+                                  .split(',')
+                                  .map((contact) => {
+                                    return contact.trim()
+                                  })
+
+                                setCurrentContactIndex(contactList.length - 1)
+                              } catch (error) {
+                                console.log(error)
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                      <span className="text-xs text-gray-400 mr-4">
+                        {contacts &&
+                          `(${currentContactIndex + 1} of ${
+                            contacts.split(',').length
+                          })`}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="card bg-base-100 shadow-xl w-full">
+                <div className="card-body">
+                  <div className="flex flex-row gap-x-8 justify-start items-center flex-wrap">
+                    <h2 className="card-title items-center mx-auto">
+                      Compose email
+                    </h2>
+                  </div>
+
                   {loadingSettings || loadingTemplate ? (
                     <div className="flex justify-center items-center h-full">
                       <Loading />
@@ -462,7 +475,7 @@ function Component() {
                           onChange={(e) => {
                             setGuessNames(!guessNames)
                           }}
-                          title="Guess names from emails"
+                          title="Guess name from email"
                           titleStyle="text-xs text-gray-400"
                           style="checkbox-xs rounded-md"
                         />
