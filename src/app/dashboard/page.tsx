@@ -18,6 +18,7 @@
 - remove local only copy
 - replace <img> with Image component
 - default value if a variable is not found but used: {toName || 'friend'}
+- batch emails dont work, they dont update toEmail and other fields
 */
 
 'use client'
@@ -53,8 +54,6 @@ import {
   getCustomDataFromUser,
   validLicenseKeyFormat
 } from '@/utils/checkLicense'
-import { get } from 'http'
-import { create } from 'domain'
 
 function Component() {
   const [tempAPIKey, setTempAPIKey] = useState('')
@@ -77,6 +76,7 @@ function Component() {
     `Hi, {toName}!\n\nI hope you're doing well. I'm {fromName}, and I help businesses like yours get more customers.\n\nI'd love to learn more about your business and see if I can help you grow.\n\nDo you have time for a quick chat this week?\n\nKind regards,\n{fromName}`
   )
 
+  const [shouldSubmit, setShouldSubmit] = useState(false)
   const [alerts, setAlerts] = useState<{ text: string; type: string }[]>([])
 
   const createAlert = (text: string, type: string) => {
@@ -105,6 +105,7 @@ function Component() {
         const contactList = contacts.split(',').map((contact) => {
           return contact.trim()
         })
+
         if (guessNames) {
           const currentName = contactList[currentContactIndex]
           const guessedCurrentName = contactList[currentContactIndex]
@@ -134,18 +135,49 @@ function Component() {
     'currentTime'
   ]
 
-  const handleSendEmail = async () => {
+  const handleFormSubmit = () => {
+    const schema = yup.object().shape({
+      fromName: yup.string().trim().required().min(1).max(100),
+      fromEmail: yup.string().email().trim().required().min(5).max(200),
+      toName: yup.string().trim().max(100),
+      toEmail: yup.string().email().trim().required().min(5).max(200),
+      subject: yup.string().trim().required().max(200),
+      message: yup.string().trim().required().max(5000)
+    })
+
+    schema
+      .validate({
+        fromName,
+        fromEmail,
+        toName,
+        toEmail,
+        subject,
+        message
+      })
+      .then(() => {
+        handleSendEmail({ toEmail })
+      })
+      .catch((error) => {
+        createAlert(error.message, 'error')
+      })
+  }
+
+  const handleSendEmail = async ({ toEmail }: { toEmail: string }) => {
+    const paramObject = {
+      fromName,
+      fromEmail,
+      toName,
+      toEmail,
+      subject,
+      message,
+      tempAPIKey
+    }
+
+    console.log('paramObject', paramObject)
+
     await axios
       .get('/api/send', {
-        params: {
-          fromName,
-          fromEmail,
-          toName,
-          toEmail,
-          subject,
-          message,
-          tempAPIKey
-        }
+        params: paramObject
       })
       .then((res) => {
         if (res.data.error) {
@@ -276,6 +308,13 @@ function Component() {
       setScrolledTop(true)
     }
   }, 300)
+
+  useEffect(() => {
+    if (shouldSubmit) {
+      handleFormSubmit()
+      setShouldSubmit(false)
+    }
+  }, [toName, toEmail, subject, message])
 
   const noAccessComponent = (
     <div className="mx-auto p-8 h-screen overflow-x-hidden flex w-full md:w-1/2 items-center justify-center">
@@ -525,7 +564,7 @@ function Component() {
                     </div>
                   </div>
                   {contacts && (
-                    <div className="flex flex-row mt-4 gap-2 flex-wrap">
+                    <div className="flex flex-row mt-4 gap-2 flex-wrap contact-buttons">
                       {contacts.split(', ').map((contact, index) => (
                         <Code
                           key={index}
@@ -543,51 +582,11 @@ function Component() {
                     </div>
                   )}
                   <form
+                    id="email-form"
                     className="flex flex-col gap-4 my-4"
                     onSubmit={(e) => {
                       e.preventDefault()
-
-                      const schema = yup.object().shape({
-                        fromName: yup
-                          .string()
-                          .trim()
-                          .required()
-                          .min(1)
-                          .max(100),
-                        fromEmail: yup
-                          .string()
-                          .email()
-                          .trim()
-                          .required()
-                          .min(5)
-                          .max(200),
-                        toName: yup.string().trim().max(100),
-                        toEmail: yup
-                          .string()
-                          .email()
-                          .trim()
-                          .required()
-                          .min(5)
-                          .max(200),
-                        subject: yup.string().trim().required().max(200),
-                        message: yup.string().trim().required().max(5000)
-                      })
-
-                      schema
-                        .validate({
-                          fromName,
-                          fromEmail,
-                          toName,
-                          toEmail,
-                          subject,
-                          message
-                        })
-                        .then(() => {
-                          handleSendEmail()
-                        })
-                        .catch((error) => {
-                          createAlert(error.message, 'error')
-                        })
+                      handleFormSubmit()
                     }}>
                     <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 items-center">
                       <Input
@@ -697,23 +696,21 @@ function Component() {
                         value="Batch send"
                         onClick={() => {
                           const areYouSure = prompt(
-                            'Are you sure you want to batch send?\n\nThis will send an email to each contact in the list, one by one, with the same message template and subject.\n\nThere is a delay of 1 second between each email. Enter "yes" to confirm.',
+                            'Are you sure you want to batch send?\n\nThis will send an email to each contact in the list, one by one, with the same message template and subject.\n\nThere is a delay of 2 seconds between each email. Enter "yes" to confirm.',
                             ''
                           )
                           if (areYouSure === 'yes') {
                             const contactList = contacts
                               .split(',')
-                              .map((email) => {
-                                return email.trim()
+                              .map((contact) => {
+                                return contact.trim()
                               })
 
                             contactList.forEach((contact, index) => {
                               setTimeout(() => {
                                 setCurrentContactIndex(index)
-                                setTimeout(() => {
-                                  handleSendEmail()
-                                }, 10)
-                              }, index * 2000)
+                                setShouldSubmit(true)
+                              }, 2000 * index)
                             })
                           }
                         }}
