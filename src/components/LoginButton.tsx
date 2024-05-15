@@ -26,6 +26,7 @@ export default function LoginButton({ settings }: { settings?: boolean }) {
     const handleLogout = () => {
       setLoggedIn(false)
       setUsername('')
+      window.location.reload && window.location.reload()
     }
 
     if (!netlifyInitSet) {
@@ -54,7 +55,7 @@ export default function LoginButton({ settings }: { settings?: boolean }) {
       netlifyIdentity.off('login', handleLogin)
       netlifyIdentity.off('logout', handleLogout)
     }
-  }, [])
+  }, [netlifyInitSet])
 
   return (
     <>
@@ -65,7 +66,7 @@ export default function LoginButton({ settings }: { settings?: boolean }) {
             data-tip="Create an account or log in">
             <a
               className="font-bold"
-              onClick={() => netlifyIdentity.open('login')}>
+              onClick={() => netlifyIdentity.open('signup')}>
               Sign up / Log in
             </a>
           </li>

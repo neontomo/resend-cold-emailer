@@ -4,6 +4,7 @@ import Button from '@/components/Button'
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
 import { ChartLine, Envelope, File, Lock } from '@phosphor-icons/react'
+import Image from 'next/image'
 
 export default function Index() {
   const featuresList = [
@@ -61,11 +62,15 @@ export default function Index() {
             <Button
               iconSide="left"
               icon={
-                <img
-                  src="/logo-transparent.png"
-                  alt="logo"
-                  className="h-full rounded-lg"
-                />
+                <span>
+                  <Image
+                    src="/logo-transparent.png"
+                    alt="logo"
+                    className="rounded-lg h-full w-full"
+                    height={32}
+                    width={32}
+                  />
+                </span>
               }
               type="button"
               which="primary"
@@ -80,10 +85,15 @@ export default function Index() {
               style="py-3 px-6 gap-4"
             />
           </div>
-          <img
-            src="/resend-emailer-screenshot.png"
-            className="max-w-full md:max-w-xl rounded-lg shadow-2xl hover:scale-125 transition-all duration-500 ease-in-out"
-          />
+          <div>
+            <Image
+              src="/resend-emailer-screenshot.png"
+              alt="screenshot"
+              width={500}
+              height={500}
+              className="max-w-full md:max-w-xl rounded-lg shadow-2xl hover:scale-125 transition-all duration-500 ease-in-out"
+            />
+          </div>
         </div>
       </div>
 
@@ -110,11 +120,15 @@ export default function Index() {
           <Button
             iconSide="left"
             icon={
-              <img
-                src="/logo-transparent.png"
-                alt="logo"
-                className="h-full rounded-lg"
-              />
+              <span>
+                <Image
+                  src="/logo-transparent.png"
+                  alt="logo"
+                  className="rounded-lg h-full w-full"
+                  height={32}
+                  width={32}
+                />
+              </span>
             }
             type="button"
             which="primary"

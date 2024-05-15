@@ -16,7 +16,6 @@
 - documentation/get started page
 - features list more complete
 - remove local only copy
-- replace <img> with Image component
 - default value if a variable is not found but used: {toName || 'friend'}
 - batch emails dont work, they dont update toEmail and other fields
 - support variables in subject line and update help text
@@ -24,7 +23,7 @@
 */
 
 'use client'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useEffect, useState } from 'react'
 import Input from '@/components/Input'
 import Button from '@/components/Button'
@@ -50,10 +49,11 @@ import netlifyIdentity from 'netlify-identity-widget'
 import GatedComponent from 'netlify-gated-components'
 import NavBar from '@/components/NavBar'
 import { checkLicenseAsync } from '@/utils/checkLicense'
-import LoginScreen from '../login/page'
+import { LoginScreen, BuyLicense } from '@/components/LoginScreen'
 import { availableVariables } from '@/components/Code'
 import { getSettings, getTemplate } from '@/utils/template'
 import Loading from '@/components/Loading'
+import { checkLoggedIn } from '@/utils/checkLoggedIn'
 
 function Component() {
   const [resendAPIKey, setResendAPIKey] = useState('')
@@ -83,9 +83,12 @@ function Component() {
   const [shouldSubmit, setShouldSubmit] = useState(false)
   const [alerts, setAlerts] = useState<{ text: string; type: string }[]>([])
 
-  const createAlert = (text: string, type: string) => {
-    setAlerts([{ text, type }, ...alerts])
-  }
+  const createAlert = useCallback(
+    (text: string, type: string) => {
+      setAlerts([{ text, type }, ...alerts])
+    },
+    [alerts]
+  )
 
   useEffect(() => {
     if (alerts.length > 0) {
@@ -130,7 +133,59 @@ function Component() {
     }
   }, [contacts, currentContactIndex, guessNames])
 
-  const handleFormSubmit = () => {
+  const handleSendEmail = useCallback(
+    async ({ toEmail }: { toEmail: string }) => {
+      const paramObject = {
+        fromName,
+        fromEmail,
+        toName: toName || 'friend',
+        toEmail,
+        replyTo,
+        subject,
+        message,
+        resendAPIKey
+      }
+
+      console.log('paramObject', paramObject)
+
+      await axios
+        .get('/api/send', {
+          params: paramObject
+        })
+        .then((res) => {
+          if (res.data.error) {
+            console.error(res.data.error)
+            createAlert(`Error: ${res.data.error.message}`, 'error')
+            return
+          }
+          console.log(res.data)
+          createAlert(`Email sent to: ${toEmail}`, 'success')
+        })
+        .catch((error) => {
+          if (error.response.data.error) {
+            console.error(error.response.data.error)
+            createAlert(error.response.data.error, 'error')
+
+            return
+          } else {
+            console.error(error)
+            createAlert(`Error: ${error}`, 'error')
+          }
+        })
+    },
+    [
+      fromName,
+      fromEmail,
+      toName,
+      replyTo,
+      subject,
+      message,
+      resendAPIKey,
+      createAlert
+    ]
+  )
+
+  const handleFormSubmit = useCallback(() => {
     const schema = yup.object().shape({
       fromName: yup.string().trim().required().min(1).max(100),
       fromEmail: yup.string().email().trim().required().min(5).max(200),
@@ -155,52 +210,25 @@ function Component() {
       .catch((error) => {
         createAlert(error.message, 'error')
       })
-  }
-
-  const handleSendEmail = async ({ toEmail }: { toEmail: string }) => {
-    const paramObject = {
-      fromName,
-      fromEmail,
-      toName: toName || 'friend',
-      toEmail,
-      replyTo,
-      subject,
-      message,
-      resendAPIKey
-    }
-
-    console.log('paramObject', paramObject)
-
-    await axios
-      .get('/api/send', {
-        params: paramObject
-      })
-      .then((res) => {
-        if (res.data.error) {
-          console.error(res.data.error)
-          createAlert(`Error: ${res.data.error.message}`, 'error')
-          return
-        }
-        console.log(res.data)
-        createAlert(`Email sent to: ${toEmail}`, 'success')
-      })
-      .catch((error) => {
-        if (error.response.data.error) {
-          console.error(error.response.data.error)
-          createAlert(error.response.data.error, 'error')
-
-          return
-        } else {
-          console.error(error)
-          createAlert(`Error: ${error}`, 'error')
-        }
-      })
-  }
+  }, [
+    fromName,
+    fromEmail,
+    toName,
+    toEmail,
+    subject,
+    message,
+    handleSendEmail,
+    createAlert
+  ])
 
   useEffect(() => {
-    netlifyIdentity.init()
-    if (netlifyIdentity.currentUser()) {
-      setLoggedIn(true)
+    const loginState = checkLoggedIn()
+    setLoggedIn(loginState)
+
+    if (loginState) {
+      checkLicenseAsync({}).then((result) => {
+        setLicensedUser(result)
+      })
 
       getSettings().then((data) => {
         if (!data.resendAPIKey || !data.fromName || !data.fromEmail) {
@@ -223,12 +251,10 @@ function Component() {
         }
         setLoadingTemplate(false)
       })
+    } else {
+      setLoggedIn(false)
     }
-
-    checkLicenseAsync({}).then((result) => {
-      setLicensedUser(result)
-    })
-  }, [netlifyIdentity])
+  }, [])
 
   setTimeout(() => {
     if (!scrolledTop) {
@@ -242,21 +268,15 @@ function Component() {
       handleFormSubmit()
       setShouldSubmit(false)
     }
-  }, [toName, toEmail, subject, message])
+  }, [toName, toEmail, subject, message, handleFormSubmit, shouldSubmit])
 
   return (
     <>
       <NavBar />
       <GatedComponent
         netlifyIdentity={netlifyIdentity}
-        noAccessContent={
-          <LoginScreen
-            netlifyIdentity={netlifyIdentity}
-            loggedIn={loggedIn}
-          />
-        }>
-        {!licensedUser && (window.location.href = '/login')}
-
+        noAccessContent={<LoginScreen />}>
+        {!licensedUser && <BuyLicense />}
         {licensedUser && (
           <div className="mx-auto overflow-x-hidden py-32 p-8">
             <div className="card bg-base-100 shadow-xl w-full mb-4">

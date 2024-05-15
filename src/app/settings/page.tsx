@@ -16,8 +16,15 @@ import Code from '@/components/Code'
 import { availableVariables } from '@/components/Code'
 import HelpComponent from '@/components/HelpComponent'
 import Loading from '@/components/Loading'
+import GatedComponent from 'netlify-gated-components'
+import netlifyIdentity from 'netlify-identity-widget'
+import { BuyLicense, LoginScreen } from '@/components/LoginScreen'
+import { checkLoggedIn } from '@/utils/checkLoggedIn'
+import { checkLicenseAsync } from '@/utils/checkLicense'
 
 export default function Settings() {
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [licensedUser, setLicensedUser] = useState(false)
   const [resendAPIKey, setResendAPIKey] = useState('')
   const [fromName, setFromName] = useState('')
   const [fromEmail, setFromEmail] = useState('')
@@ -276,29 +283,49 @@ export default function Settings() {
     </div>
   )
 
+  useEffect(() => {
+    const loginState = checkLoggedIn()
+    setLoggedIn(loginState)
+
+    if (loginState) {
+      checkLicenseAsync({}).then((result) => {
+        setLicensedUser(result)
+      })
+    }
+  }, [])
+
   return (
     <>
       <NavBar />
-      <div className="mx-auto overflow-x-hidden py-32 p-8">
-        <div className="card bg-base-100 shadow-xl w-full mb-4">
-          <div className="card-body">
-            <h1 className="card-title">Settings</h1>
-            <div>
-              To use this service you need to set up your settings. The minimum
-              required settings are:
-              <div className="flex flex-row gap-2 mt-4">
-                <Code>Resend API key</Code>
-                <Code>From name</Code>
-                <Code>From email</Code>
+      <GatedComponent
+        netlifyIdentity={netlifyIdentity}
+        noAccessContent={<LoginScreen />}>
+        {!licensedUser ? (
+          <BuyLicense />
+        ) : (
+          <div className="mx-auto overflow-x-hidden py-32 p-8">
+            <div className="card bg-base-100 shadow-xl w-full mb-4">
+              <div className="card-body">
+                <h1 className="card-title">Settings</h1>
+                <div>
+                  To use this service you need to set up your settings. The
+                  minimum required settings are:
+                  <div className="flex flex-row gap-2 mt-4">
+                    <Code>Resend API key</Code>
+                    <Code>From name</Code>
+                    <Code>From email</Code>
+                  </div>
+                </div>
               </div>
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {SettingsComponent}
+              {templateSettingsComponent}
+            </div>
           </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {SettingsComponent}
-          {templateSettingsComponent}
-        </div>
-      </div>
+        )}
+      </GatedComponent>
+
       <Footer />
     </>
   )
