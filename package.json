@@ -1,5 +1,5 @@
 {
-  "name": "simple-resend-emailer",
+  "name": "resend-cold-emailer",
   "version": "0.1.0",
   "private": true,
   "scripts": {

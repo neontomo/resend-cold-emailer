@@ -59,7 +59,7 @@ export const addCustomDataToUser = async ({ data }: { data: any }) => {
 
   try {
     const res = await axios.put(
-      'https://simple-resend-emailer.netlify.app/.netlify/identity/user',
+      'https://resend-cold-emailer.netlify.app/.netlify/identity/user',
       { data },
       { headers: genericJSONHeaders }
     )
@@ -94,7 +94,7 @@ export const getCustomDataFromUser = async (key: string) => {
 
   try {
     const res = await axios.get(
-      `https://simple-resend-emailer.netlify.app/.netlify/identity/user`,
+      `https://resend-cold-emailer.netlify.app/.netlify/identity/user`,
       {
         headers: genericJSONHeaders
       }

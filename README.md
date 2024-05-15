@@ -1,10 +1,10 @@
-# Simple Resend Emailer
+# Resend Cold Emailer
 
 This project is a simple client for sending emails through the Resend.com API. It's built with React and uses Axios for API calls, Yup for form validation, and Day.js for date and time formatting.
 
 # screenshot
 
-![resend-emailer-screenshot](https://github.com/neontomo/simple-resend-emailer/assets/105588693/5010862d-ce0b-4945-b488-6884b3a934b4)
+![resend-emailer-screenshot](https://github.com/neontomo/resend-cold-emailer/assets/105588693/5010862d-ce0b-4945-b488-6884b3a934b4)
 
 ## Features
 
@@ -22,13 +22,13 @@ This project is a simple client for sending emails through the Resend.com API. I
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/neontomo/simple-resend-emailer.git
+git clone https://github.com/neontomo/resend-cold-emailer.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd simple-resend-emailer
+cd resend-cold-emailer
 ```
 
 3. Install the dependencies with your package manager of choice:

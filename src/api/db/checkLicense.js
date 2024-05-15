@@ -3,7 +3,7 @@ const { client, setup } = require('./client')
 const axios = require('axios')
 
 async function checkLicense(email, productID) {
-  //https://simple-resend-emailer.netlify.app/api/checkLicense/tomo@gmail.com/bJ-NJvJIHf1FwZexc0pyIA==/554DB8D9-B3264533-92D4858F-E799DE0F
+  //https://resend-cold-emailer.netlify.app/api/checkLicense/tomo@gmail.com/bJ-NJvJIHf1FwZexc0pyIA==/554DB8D9-B3264533-92D4858F-E799DE0F
   try {
     /*    if (
       !licenseKey
