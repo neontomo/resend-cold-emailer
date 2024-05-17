@@ -1,13 +1,6 @@
 import netlifyIdentity from 'netlify-identity-widget'
 
-export function checkLoggedIn() {
+export async function checkLoggedIn() {
   netlifyIdentity.init()
-
-  const user = netlifyIdentity.currentUser()
-
-  if (!user) {
-    return false
-  }
-
-  return true
+  return Boolean(netlifyIdentity.currentUser())
 }

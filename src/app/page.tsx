@@ -5,6 +5,8 @@ import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
 import { ChartLine, Envelope, File, Lock } from '@phosphor-icons/react'
 import Image from 'next/image'
+import DescriptionText from '@/components/DescriptionText'
+import netlifyIdentity from 'netlify-identity-widget'
 
 export default function Index() {
   const featuresList = [
@@ -36,7 +38,7 @@ export default function Index() {
 
   return (
     <>
-      <NavBar />
+      <NavBar netlifyIdentity={netlifyIdentity} />
       <div className="hero min-h-screen bg-base-200 pt-32 lg:pt-0 pb-32">
         <div className="hero-content min-h-screen flex-col lg:flex-row gap-32 p-4 md:p-8">
           <div>
@@ -46,7 +48,7 @@ export default function Index() {
                 Resend Cold Emailer is the easiest way to get warm clients. Just
                 paste your email list, create a template and start making money.
               </div>
-              <span className="text-sm text-gray-400">
+              <DescriptionText>
                 * Requires custom domain for emails and a free{' '}
                 <a
                   href="https://resend.com/signup"
@@ -57,7 +59,7 @@ export default function Index() {
                   resend.com
                 </a>{' '}
                 account.
-              </span>
+              </DescriptionText>
             </div>
             <Button
               iconSide="left"
@@ -102,7 +104,7 @@ export default function Index() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-32 gap-y-16 w-1/2 mx-auto">
           {featuresList.map((feature, i) => (
             <div
-              key={i}
+              key={`feature-${i}`}
               className="flex flex-col gap-4">
               <h3 className="text-2xl font-bold items-center flex gap-2">
                 {feature.icon}

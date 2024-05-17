@@ -2,7 +2,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb')
 
 const setup = {
   loginUsername: 'tomo',
-  loginPassword: 'EQ6L1eMfqx0oc3HF',
+  loginPassword: 'testing1234',
   clusterName: 'sidehustlecluster',
   databaseName: 'ResendAccounts',
   collectionName: 'AccountsCollection',

@@ -1,4 +1,5 @@
 import helpComponent from '@/components/HelpComponent'
+import DescriptionText from './DescriptionText'
 
 function Input({
   id,
@@ -187,7 +188,10 @@ function Input({
       {type === 'checkbox' && (
         <label
           className={`label cursor-pointer flex flex-row gap-4 ${containerStyle}`}>
-          <span className={`label-text ${titleStyle}`}>{title}</span>
+          <DescriptionText>
+            <span className={`${titleStyle}`}>{title}</span>
+          </DescriptionText>
+
           <input
             id={id}
             type="checkbox"

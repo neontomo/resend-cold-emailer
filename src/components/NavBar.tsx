@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import LoginButton from '@/components/LoginButton'
 
-function NavBar() {
+function NavBar({ netlifyIdentity }: { netlifyIdentity: any }) {
   return (
     <>
       <div className="fixed top-0 left-0 navbar bg-base-100 z-[90]">
@@ -39,7 +39,7 @@ function NavBar() {
               <li>
                 <a href="mailto:tomo@neontomo.com">Contact</a>
               </li>
-              <LoginButton />
+              <LoginButton netlifyIdentity={netlifyIdentity} />
             </ul>
           </div>
           <a
@@ -72,7 +72,10 @@ function NavBar() {
               data-tip="Contact support">
               <a href="mailto:tomo@neontomo.com">Contact</a>
             </li>
-            <LoginButton settings={true} />
+            <LoginButton
+              netlifyIdentity={netlifyIdentity}
+              settings={true}
+            />
           </ul>
         </div>
       </div>

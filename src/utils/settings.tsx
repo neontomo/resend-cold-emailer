@@ -1,4 +1,8 @@
-import { addCustomDataToUser, getCustomDataFromUser } from './checkLicense'
+import {
+  addCustomDataToUser,
+  getCustomDataFromUser,
+  getMultipleCustomDataFromUser
+} from '@/utils/checkLicense'
 
 export const saveTemplate = async ({
   subject,
@@ -25,12 +29,11 @@ export const saveTemplate = async ({
 }
 
 export const getTemplate = async () => {
-  const subject = await getCustomDataFromUser('subject')
-  const message = await getCustomDataFromUser('message')
+  const template = await getMultipleCustomDataFromUser(['subject', 'message'])
 
   return {
-    subject,
-    message
+    subject: template?.subject,
+    message: template?.message
   }
 }
 
@@ -65,15 +68,17 @@ export const saveSettings = async ({
 }
 
 export const getSettings = async () => {
-  const resendAPIKey = await getCustomDataFromUser('resendAPIKey')
-  const fromName = await getCustomDataFromUser('fromName')
-  const fromEmail = await getCustomDataFromUser('fromEmail')
-  const replyTo = await getCustomDataFromUser('replyTo')
+  const settings = await getMultipleCustomDataFromUser([
+    'resendAPIKey',
+    'fromName',
+    'fromEmail',
+    'replyTo'
+  ])
 
   return {
-    resendAPIKey,
-    fromName,
-    fromEmail,
-    replyTo
+    resendAPIKey: settings?.resendAPIKey,
+    fromName: settings?.fromName,
+    fromEmail: settings?.fromEmail,
+    replyTo: settings?.replyTo
   }
 }

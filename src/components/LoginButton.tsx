@@ -1,61 +1,30 @@
 'use client'
 
-import netlifyIdentity from 'netlify-identity-widget'
 import { useState, useEffect } from 'react'
+import { checkLoggedIn } from '@/utils/checkLoggedIn'
 
-export default function LoginButton({ settings }: { settings?: boolean }) {
+export default function LoginButton({
+  netlifyIdentity,
+  settings
+}: {
+  netlifyIdentity: any
+  settings?: boolean
+}) {
   const [loggedIn, setLoggedIn] = useState(false)
-  const [username, setUsername] = useState('')
-  const [netlifyInitSet, setNetlifyInitSet] = useState(false)
 
   useEffect(() => {
-    const handleLogin = (user: any) => {
-      if (!user.user_metadata || !user.user_metadata.full_name) return
-      setLoggedIn(true)
-      setUsername(user.user_metadata.full_name)
+    checkLoggedIn().then((loginState) => {
+      setLoggedIn(loginState)
+    })
 
-      if (!netlifyInitSet) {
-        netlifyIdentity.init()
-        setNetlifyInitSet(true)
-        if (window.location.pathname === '/') {
-          window.location.href = '/dashboard'
-        }
-      }
-    }
+    netlifyIdentity.on('login', () => {
+      window.location.reload()
+    })
 
-    const handleLogout = () => {
-      setLoggedIn(false)
-      setUsername('')
-      window.location.reload && window.location.reload()
-    }
-
-    if (!netlifyInitSet) {
-      netlifyIdentity.init()
-      setNetlifyInitSet(true)
-    }
-
-    netlifyIdentity.on('login', handleLogin)
-    netlifyIdentity.on('logout', handleLogout)
-
-    const currentUser = netlifyIdentity.currentUser()
-    if (
-      currentUser &&
-      currentUser.user_metadata &&
-      currentUser.user_metadata.full_name
-    ) {
-      setLoggedIn(true)
-      setUsername(currentUser.user_metadata.full_name)
-
-      if (!netlifyInitSet) {
-        setNetlifyInitSet(true)
-      }
-    }
-
-    return () => {
-      netlifyIdentity.off('login', handleLogin)
-      netlifyIdentity.off('logout', handleLogout)
-    }
-  }, [netlifyInitSet])
+    netlifyIdentity.on('logout', () => {
+      window.location.reload()
+    })
+  }, [])
 
   return (
     <>
@@ -78,7 +47,13 @@ export default function LoginButton({ settings }: { settings?: boolean }) {
           <li
             className="tooltip tooltip-bottom cursor-pointer"
             data-tip="Log out of your account">
-            <a onClick={() => netlifyIdentity.logout()}>Log out ({username})</a>
+            <a
+              onClick={() => {
+                netlifyIdentity.logout()
+              }}>
+              Log out (
+              {netlifyIdentity?.currentUser()?.user_metadata?.full_name})
+            </a>
           </li>
           {settings && (
             <li
