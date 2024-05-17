@@ -1,9 +1,8 @@
 import Input from '@/components/Input'
 import Button from '@/components/Button'
 import { Ticket, Check } from '@phosphor-icons/react'
-import { addLicenseToUser } from '@/utils/checkLicense'
+import { addLicenseToUser } from '@/utils/netlifyIdentity/user'
 import Code from '@/components/Code'
-import netlifyIdentity from 'netlify-identity-widget'
 import Card from '@/components/Card'
 
 export function LicenseChecker({

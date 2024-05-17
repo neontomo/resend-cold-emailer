@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { checkLoggedIn } from '@/utils/checkLoggedIn'
+import { checkLoggedIn } from '@/utils/netlifyIdentity/tokens'
 
 export default function LoginButton({
   netlifyIdentity,

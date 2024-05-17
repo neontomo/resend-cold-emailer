@@ -48,13 +48,11 @@ import {
 
 import netlifyIdentity from 'netlify-identity-widget'
 import NavBar from '@/components/NavBar'
-import {
-  checkLicenseAsync,
-  getMultipleCustomDataFromUser
-} from '@/utils/checkLicense'
+import { getMultipleCustomDataFromUser } from '@/utils/netlifyIdentity/user'
 import { LoginScreen, BuyLicense } from '@/components/LoginScreen'
 import { getSettings, getTemplate } from '@/utils/settings'
-import { checkLoggedIn } from '@/utils/checkLoggedIn'
+import { checkLoggedIn } from '@/utils/netlifyIdentity/tokens'
+import { checkLicense } from '@/utils/gumroad/license'
 import Composer from '@/components/dashboard/Composer'
 import Rendered from '@/components/dashboard/Rendered'
 import ContactLoader from '@/components/dashboard/ContactLoader'
@@ -102,7 +100,7 @@ function Component() {
 
   const getAllSettings = useCallback(() => {
     getSettings().then((data) => {
-      if (!data.resendAPIKey || !data.fromName || !data.fromEmail) {
+      if (!data || !data.resendAPIKey || !data.fromName || !data.fromEmail) {
         window && window.location.replace('/settings')
         return
       }
@@ -114,6 +112,8 @@ function Component() {
     })
 
     getTemplate().then((data) => {
+      if (!data) return
+
       if (data.subject) {
         setSubject(data.subject)
       }
@@ -131,7 +131,7 @@ function Component() {
 
     setLoggedIn(loginState)
 
-    const isValidLicense = await checkLicenseAsync({})
+    const isValidLicense = await checkLicense({})
     setLicensedUser(isValidLicense)
 
     const license = await getMultipleCustomDataFromUser(['licenseKey']).then(

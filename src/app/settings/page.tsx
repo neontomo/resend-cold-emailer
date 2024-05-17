@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react'
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
 import netlifyIdentity from 'netlify-identity-widget'
-import { checkLoggedIn } from '@/utils/checkLoggedIn'
-import {
-  checkLicenseAsync,
-  getMultipleCustomDataFromUser
-} from '@/utils/checkLicense'
+import { checkLoggedIn } from '@/utils/netlifyIdentity/tokens'
+import { checkLicense } from '@/utils/gumroad/license'
+import { getMultipleCustomDataFromUser } from '@/utils/netlifyIdentity/user'
 import { GetStarted } from '@/components/settings/GetStarted'
 import { LicenseChecker } from '@/components/settings/LicenseChecker'
 import { TemplateSettings } from '@/components/settings/TemplateSettings'
@@ -28,13 +26,11 @@ export default function Settings() {
 
     setLoggedIn(loginState)
 
-    const isValidLicense = await checkLicenseAsync({})
+    const isValidLicense = await checkLicense({})
     setLicensedUser(isValidLicense)
 
     const license = await getMultipleCustomDataFromUser(['licenseKey']).then(
-      (data) => {
-        return data.licenseKey
-      }
+      (data) => data.licenseKey
     )
     setLicenseKey(license)
 
