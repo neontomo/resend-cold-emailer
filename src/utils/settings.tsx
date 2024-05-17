@@ -1,8 +1,7 @@
 import {
   addCustomDataToUser,
-  getCustomDataFromUser,
   getMultipleCustomDataFromUser
-} from '@/utils/checkLicense'
+} from '@/utils/netlifyIdentity/user'
 
 export const saveTemplate = async ({
   subject,
@@ -11,14 +10,9 @@ export const saveTemplate = async ({
   subject: string
   message: string
 }) => {
-  const dataObject = {
-    subject,
-    message
-  }
-
   try {
     const data = await addCustomDataToUser({
-      data: dataObject
+      data: { subject, message }
     })
 
     return data
@@ -29,11 +23,16 @@ export const saveTemplate = async ({
 }
 
 export const getTemplate = async () => {
-  const template = await getMultipleCustomDataFromUser(['subject', 'message'])
+  try {
+    const template = await getMultipleCustomDataFromUser(['subject', 'message'])
 
-  return {
-    subject: template?.subject,
-    message: template?.message
+    return {
+      subject: template?.subject,
+      message: template?.message
+    }
+  } catch (error) {
+    console.log('Error getting template:', error)
+    return null
   }
 }
 
@@ -62,23 +61,28 @@ export const saveSettings = async ({
 
     return data
   } catch (error) {
-    console.error(error)
+    console.log('Error saving settings:', error)
     return null
   }
 }
 
 export const getSettings = async () => {
-  const settings = await getMultipleCustomDataFromUser([
-    'resendAPIKey',
-    'fromName',
-    'fromEmail',
-    'replyTo'
-  ])
+  try {
+    const settings = await getMultipleCustomDataFromUser([
+      'resendAPIKey',
+      'fromName',
+      'fromEmail',
+      'replyTo'
+    ])
 
-  return {
-    resendAPIKey: settings?.resendAPIKey,
-    fromName: settings?.fromName,
-    fromEmail: settings?.fromEmail,
-    replyTo: settings?.replyTo
+    return {
+      resendAPIKey: settings?.resendAPIKey,
+      fromName: settings?.fromName,
+      fromEmail: settings?.fromEmail,
+      replyTo: settings?.replyTo
+    }
+  } catch (error) {
+    console.log('Error getting settings:', error)
+    return null
   }
 }
