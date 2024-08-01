@@ -37,7 +37,7 @@ function NavBar({ netlifyIdentity }: { netlifyIdentity: any }) {
                 <a href="/dashboard">Dashboard</a>
               </li>
               <li>
-                <a href="mailto:tomo@neontomo.com">Contact</a>
+                <a href="mailto:tomomyrman+neontomo@proton.me">Contact</a>
               </li>
               <LoginButton netlifyIdentity={netlifyIdentity} />
             </ul>
@@ -70,7 +70,7 @@ function NavBar({ netlifyIdentity }: { netlifyIdentity: any }) {
             <li
               className="tooltip tooltip-bottom"
               data-tip="Contact support">
-              <a href="mailto:tomo@neontomo.com">Contact</a>
+              <a href="mailto:tomomyrman+neontomo@proton.me">Contact</a>
             </li>
             <LoginButton
               netlifyIdentity={netlifyIdentity}

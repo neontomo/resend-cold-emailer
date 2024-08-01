@@ -76,11 +76,10 @@ function Composer({
               which="danger"
               value="Batch send"
               onClick={() => {
-                const areYouSure = prompt(
-                  'Are you sure you want to batch send?\n\nThis will send an email to each contact in the list, one by one, with the same message template and subject.\n\nThere is a delay of 2 seconds between each email. Enter "yes" to confirm.',
-                  ''
+                const areYouSure = confirm(
+                  'Are you sure you want to batch send?\n\nThis will send an email to each contact in the list, one by one, with the same message template and subject.\n\nThere is a delay of 2 seconds between each email. Enter "yes" to confirm.'
                 )
-                if (areYouSure === 'yes') {
+                if (areYouSure) {
                   const contactList = settings.contacts
                     .split(',')
                     .map((contact) => {
